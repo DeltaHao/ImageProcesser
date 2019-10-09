@@ -31,8 +31,7 @@ SOURCES += \
 HEADERS += \
         imageprocesser.h
 
-FORMS += \
-        imageprocesser.ui
+FORMS +=
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
