@@ -1,17 +1,28 @@
 #include "imageprocesser.h"
 #include <QtWidgets>
+#include <QtCharts>
 
 //构造函数
 ImageProcesser::ImageProcesser():
-    imageLabel(new QLabel), scrollArea(new QScrollArea){
+    widget(new QWidget), imageLabel(new QLabel), scrollArea(new QScrollArea), chartview(new QChartView){
+    setCentralWidget(widget);//设置窗口中心部件
+    //图片Label
     imageLabel->setBackgroundRole(QPalette::Base);//设置背景颜色
     imageLabel->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);//设置大小可调整
     imageLabel->setScaledContents(true);//设置窗口自适应
-
+    //滚动框
     scrollArea->setBackgroundRole(QPalette::Dark);
     scrollArea->setWidget(imageLabel);//将scrollArea中的内容设置为imageLabel
     scrollArea->setVisible(false);//初始不可见
-    setCentralWidget(scrollArea);//将窗口中心部件设置为scrollArea
+    //直方图
+    chartview->setVisible(false);
+    //设置布局
+    QGridLayout *mainLayout = new QGridLayout;
+    mainLayout->addWidget(scrollArea, 1, 0);
+    mainLayout->addWidget(chartview, 1, 1);
+    mainLayout->setColumnStretch(0, 1);
+    mainLayout->setColumnStretch(1, 1);
+    widget->setLayout(mainLayout);
 
     createActions();
 
@@ -29,8 +40,8 @@ void ImageProcesser::createActions(){
     saveAsAct = fileMenu->addAction(tr("&另存为..."), this, &ImageProcesser::saveAs);
     saveAsAct->setShortcut(QKeySequence::SaveAs);
     saveAsAct->setEnabled(false);//初始不可用(未打开时)
-
-    fileMenu->addSeparator();//分隔符
+    //分隔符
+    fileMenu->addSeparator();
     //关闭按钮
     QAction *exitAct = fileMenu->addAction(tr("&关闭"), this, &QWidget::close);
     exitAct->setShortcut(tr("Ctrl+Q"));
@@ -41,23 +52,21 @@ void ImageProcesser::createActions(){
     changeToGrayAct = processMenu->addAction(tr("&灰度图/RGB图"), this, &ImageProcesser::changeToGray);
     changeToGrayAct->setEnabled(false);
     changeToGrayAct->setCheckable(true);
+    //分隔符
+    processMenu->addSeparator();
     //转为位平面图
     changeToBitplaneAct[0] = processMenu->addAction(tr("&位平面-1"), this, &ImageProcesser::changeToBitplane1);
-    changeToBitplaneAct[0]->setEnabled(false);
     changeToBitplaneAct[1] = processMenu->addAction(tr("&位平面-2"), this, &ImageProcesser::changeToBitplane2);
-    changeToBitplaneAct[1]->setEnabled(false);
     changeToBitplaneAct[2] = processMenu->addAction(tr("&位平面-3"), this, &ImageProcesser::changeToBitplane3);
-    changeToBitplaneAct[2]->setEnabled(false);
     changeToBitplaneAct[3] = processMenu->addAction(tr("&位平面-4"), this, &ImageProcesser::changeToBitplane4);
-    changeToBitplaneAct[3]->setEnabled(false);
     changeToBitplaneAct[4] = processMenu->addAction(tr("&位平面-5"), this, &ImageProcesser::changeToBitplane5);
-    changeToBitplaneAct[4]->setEnabled(false);
     changeToBitplaneAct[5] = processMenu->addAction(tr("&位平面-6"), this, &ImageProcesser::changeToBitplane6);
-    changeToBitplaneAct[5]->setEnabled(false);
     changeToBitplaneAct[6] = processMenu->addAction(tr("&位平面-7"), this, &ImageProcesser::changeToBitplane7);
-    changeToBitplaneAct[6]->setEnabled(false);
     changeToBitplaneAct[7] = processMenu->addAction(tr("&位平面-8"), this, &ImageProcesser::changeToBitplane8);
-    changeToBitplaneAct[7]->setEnabled(false);
+    for(int i=0; i<8; i++){
+        changeToBitplaneAct[i]->setEnabled(false);
+        changeToBitplaneAct[i]->setCheckable(true);
+    }
 
     //菜单栏-关于
     QMenu *aboutMenu = menuBar()->addMenu(tr("&关于"));
@@ -124,6 +133,8 @@ void ImageProcesser::setImage(const QImage &newImage){
     for(int i=0; i<8; i++)
         changeToBitplaneAct[i]->setEnabled(true);
 
+    Imhist();//构建直方图
+
     imageLabel->adjustSize();//imageLabel的大小可调整
 }
 
@@ -188,8 +199,9 @@ void ImageProcesser::changeToGray(){
     if(!isChecked)//若未被选择
         imageLabel->setPixmap(QPixmap::fromImage(image));//显示原图
 
-    else//若被选择
+    else{//若被选择
         imageLabel->setPixmap(QPixmap::fromImage(grayimage));//显示灰度图
+    }
 }
 
 //将8位灰度图像转换为8幅位平面二值图
@@ -208,27 +220,56 @@ void ImageProcesser::toBitplane(){
         }
     }
 }
+
 void ImageProcesser::changeToBitplane1(){
-    imageLabel->setPixmap(QPixmap::fromImage(bitplaneimage[0]));
+    int index = 0;
+    imageLabel->setPixmap(QPixmap::fromImage(bitplaneimage[index]));
+    for(int i=0; i<8; i++){
+        if(i!=index) changeToBitplaneAct[i]->setChecked(false);
+    }
 }
 void ImageProcesser::changeToBitplane2(){
-    imageLabel->setPixmap(QPixmap::fromImage(bitplaneimage[1]));
+    int index = 1;
+    imageLabel->setPixmap(QPixmap::fromImage(bitplaneimage[index]));
+    for(int i=0; i<8; i++){
+        if(i!=index) changeToBitplaneAct[i]->setChecked(false);
+    }
 }
 void ImageProcesser::changeToBitplane3(){
-    imageLabel->setPixmap(QPixmap::fromImage(bitplaneimage[2]));
-}
+    int index = 2;
+    imageLabel->setPixmap(QPixmap::fromImage(bitplaneimage[index]));
+    for(int i=0; i<8; i++){
+        if(i!=index) changeToBitplaneAct[i]->setChecked(false);
+    }}
 void ImageProcesser::changeToBitplane4(){
-    imageLabel->setPixmap(QPixmap::fromImage(bitplaneimage[3]));
-}
+    int index = 3;
+    imageLabel->setPixmap(QPixmap::fromImage(bitplaneimage[index]));
+    for(int i=0; i<8; i++){
+        if(i!=index) changeToBitplaneAct[i]->setChecked(false);
+    }}
 void ImageProcesser::changeToBitplane5(){
-    imageLabel->setPixmap(QPixmap::fromImage(bitplaneimage[4]));
-}
+    int index = 4;
+    imageLabel->setPixmap(QPixmap::fromImage(bitplaneimage[index]));
+    for(int i=0; i<8; i++){
+        if(i!=index) changeToBitplaneAct[i]->setChecked(false);
+    }}
 void ImageProcesser::changeToBitplane6(){
-    imageLabel->setPixmap(QPixmap::fromImage(bitplaneimage[5]));
-}
+    int index = 5;
+    imageLabel->setPixmap(QPixmap::fromImage(bitplaneimage[index]));
+    for(int i=0; i<8; i++){
+        if(i!=index) changeToBitplaneAct[i]->setChecked(false);
+    }}
 void ImageProcesser::changeToBitplane7(){
-    imageLabel->setPixmap(QPixmap::fromImage(bitplaneimage[6]));
+    int index = 6;
+    imageLabel->setPixmap(QPixmap::fromImage(bitplaneimage[index]));
+    for(int i=0; i<8; i++){
+        if(i!=index) changeToBitplaneAct[i]->setChecked(false);
+    }
 }
 void ImageProcesser::changeToBitplane8(){
-    imageLabel->setPixmap(QPixmap::fromImage(bitplaneimage[7]));
+    int index = 7;
+    imageLabel->setPixmap(QPixmap::fromImage(bitplaneimage[index]));
+    for(int i=0; i<8; i++){
+        if(i!=index) changeToBitplaneAct[i]->setChecked(false);
+    }
 }

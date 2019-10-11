@@ -5,6 +5,7 @@
 #include <QMainWindow>
 #include <QImage>
 #include <QPainter>
+#include <QtCharts>
 
 //一些要用到的类
 QT_BEGIN_NAMESPACE
@@ -44,14 +45,15 @@ private:
     void setImage(const QImage &newImage);
     void toGray();
     void toBitplane();
-
+    void Imhist();
     //实体成员
     QImage image;//原图像
     QImage grayimage;//灰度图像
     QImage bitplaneimage[8];//8幅位平面二值图
+    QWidget *widget;
     QLabel *imageLabel;
     QScrollArea *scrollArea;
-
+    QChartView *chartview;
     //一些要用到的命令
     QAction *saveAsAct;
     QAction *changeToGrayAct;
