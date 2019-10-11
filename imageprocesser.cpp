@@ -4,7 +4,12 @@
 
 //构造函数
 ImageProcesser::ImageProcesser():
-    widget(new QWidget), imageLabel(new QLabel), scrollArea(new QScrollArea), chartview(new QChartView){
+    widget(new QWidget),
+    imageLabel(new QLabel),
+    scrollArea(new QScrollArea),
+    chartview(new QChartView),
+    GrayInfo(new QLabel)
+{
     setCentralWidget(widget);//设置窗口中心部件
     //图片Label
     imageLabel->setBackgroundRole(QPalette::Base);//设置背景颜色
@@ -16,12 +21,16 @@ ImageProcesser::ImageProcesser():
     scrollArea->setVisible(false);//初始不可见
     //直方图
     chartview->setVisible(false);
+    GrayInfo->setVisible(false);
     //设置布局
     QGridLayout *mainLayout = new QGridLayout;
-    mainLayout->addWidget(scrollArea, 1, 0);
-    mainLayout->addWidget(chartview, 1, 1);
+    mainLayout->addWidget(scrollArea, 0, 0);
+    mainLayout->addWidget(chartview, 0, 1);
+    mainLayout->addWidget(GrayInfo, 1, 1);
     mainLayout->setColumnStretch(0, 1);
     mainLayout->setColumnStretch(1, 1);
+    mainLayout->setRowStretch(0, 5);
+    mainLayout->setRowStretch(1, 1);
     widget->setLayout(mainLayout);
 
     createActions();
@@ -134,6 +143,7 @@ void ImageProcesser::setImage(const QImage &newImage){
         changeToBitplaneAct[i]->setEnabled(true);
 
     Imhist();//构建直方图
+    showGrayInfo();
 
     imageLabel->adjustSize();//imageLabel的大小可调整
 }

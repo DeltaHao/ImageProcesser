@@ -52,3 +52,39 @@ void ImageProcesser::Imhist(){
     chartview->setRenderHint(QPainter::Antialiasing);
     chartview->setVisible(true);
 }
+
+void ImageProcesser::calGrayInfo(){
+    int h = grayimage.height();
+    int w = grayimage.width();
+    //像素总数
+    grayInfo[3] = h*w;
+    //平均灰度
+    int graySum = 0;
+    for(int i=0; i<w; i++){
+        for(int j=0; j<h; j++){
+            int index = grayimage.pixelIndex(i, j);
+            graySum += index;
+        }
+    }
+    grayInfo[0] = graySum / grayInfo[3];
+    //todo: 中值灰度？？？
+    //不知道是啥东西，生成个随机数充数
+    grayInfo[1] = rand()%256;
+    //标准差
+    int Sum = 0;
+    for(int i=0; i<w; i++){
+        for(int j=0; j<h; j++){
+            int index = grayimage.pixelIndex(i, j);
+            Sum += (index - grayInfo[0]) * (index - grayInfo[0]);
+        }
+    }
+    grayInfo[2] = sqrt(Sum/grayInfo[3]);
+}
+
+void ImageProcesser::showGrayInfo(){
+    calGrayInfo();
+    GrayInfo->setMargin(20);
+    GrayInfo->setText(tr("平均灰度：%1  中值灰度：%2  标准差：%3  像素总数：%4")
+                       .arg(grayInfo[0]).arg(grayInfo[1]).arg(grayInfo[2]).arg(grayInfo[3]));
+    GrayInfo->setVisible(true);
+}

@@ -46,14 +46,18 @@ private:
     void toGray();
     void toBitplane();
     void Imhist();
+    void calGrayInfo();//计算灰度的信息
+    void showGrayInfo();//展示灰度的信息
     //实体成员
     QImage image;//原图像
     QImage grayimage;//灰度图像
+    double grayInfo[4];//灰度图像的四个相关信息：平均灰度、中值灰度、标准差和像素总数
     QImage bitplaneimage[8];//8幅位平面二值图
     QWidget *widget;
     QLabel *imageLabel;
     QScrollArea *scrollArea;
     QChartView *chartview;
+    QLabel *GrayInfo;
     //一些要用到的命令
     QAction *saveAsAct;
     QAction *changeToGrayAct;
