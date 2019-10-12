@@ -2,7 +2,7 @@
 #include<QtWidgets>
 
 void ImageProcesser::showSpinBox(){
-    if(radioButton->isChecked()){
+    if(radioButton->isChecked()){//如果
         spinbox->setRange(0, 255);
         spinbox->setSingleStep(16);
         spinbox->setVisible(true);

@@ -28,7 +28,9 @@ CONFIG += c++11
 SOURCES += \
         main.cpp \
         imageprocesser.cpp \
-    histogram.cpp
+    histogram.cpp \
+    actions.cpp \
+    thresholdgary.cpp
 
 HEADERS += \
         imageprocesser.h

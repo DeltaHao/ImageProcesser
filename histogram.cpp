@@ -1,7 +1,7 @@
 #include<QtCharts>
 #include "imageprocesser.h"
 
-void ImageProcesser::Imhist(){
+void ImageProcesser::showHistogram(){
     //  对直方图进行数据处理,求出各个灰度值的像素数
     int data[256]{0};
     int yRange = 0;
@@ -53,9 +53,10 @@ void ImageProcesser::Imhist(){
     chartview->setVisible(true);
 }
 
-void ImageProcesser::calGrayInfo(){
+void ImageProcesser::showGrayInfo(){
     int h = grayimage.height();
     int w = grayimage.width();
+    int data[256]{0};
     //像素总数
     grayInfo[3] = h*w;
     //平均灰度
@@ -64,12 +65,19 @@ void ImageProcesser::calGrayInfo(){
         for(int j=0; j<h; j++){
             int index = grayimage.pixelIndex(i, j);
             graySum += index;
+            ++data[index];
         }
     }
     grayInfo[0] = graySum / grayInfo[3];
     //todo: 中值灰度？？？
-    //不知道是啥东西，生成个随机数充数
-    grayInfo[1] = rand()%256;
+    int count = 0;
+    int i=0;
+    for (i=0; i<256; i++) {
+        count += data[i];
+        if(count >= grayInfo[3]/2)
+            break;
+    }
+    grayInfo[1] = i;
     //标准差
     int Sum = 0;
     for(int i=0; i<w; i++){
@@ -79,12 +87,12 @@ void ImageProcesser::calGrayInfo(){
         }
     }
     grayInfo[2] = sqrt(Sum/grayInfo[3]);
-}
 
-void ImageProcesser::showGrayInfo(){
-    calGrayInfo();
+
+    //展示灰度信息
     GrayInfo->setMargin(20);
     GrayInfo->setText(tr("平均灰度：%1  中值灰度：%2  标准差：%3  像素总数：%4")
                        .arg(grayInfo[0]).arg(grayInfo[1]).arg(grayInfo[2]).arg(grayInfo[3]));
     GrayInfo->setVisible(true);
 }
+
