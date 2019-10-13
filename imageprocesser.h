@@ -42,6 +42,9 @@ private slots://私有槽函数
     void showSpinBox2();//显示线性变换调节框
     void showlinearImage1(double a);//对比度变化
     void showlinearImage2(int b);//亮度变化
+    void showSpinBox3();//显示非线性变换调节框
+    void showUnlinearImage1(double a);//中值对比度
+    void showUnlinearImage2(double b);//暗部增强
 private:
     //私有函数
     void createActions();//创造命令
@@ -70,6 +73,9 @@ private:
     QDoubleSpinBox *spinbox2_1;
     QSpinBox *spinbox2_2;
     QRadioButton *radioButton2;
+    QRadioButton *radioButton0;
+    QDoubleSpinBox *spinbox3_1;
+    QDoubleSpinBox *spinbox3_2;
     QRadioButton *radioButton3;
 
     //菜单命令

@@ -62,6 +62,7 @@ void ImageProcesser::setImage(){
     changeToGrayAct->setEnabled(true);
     for(int i=0; i<8; i++)
         changeToBitplaneAct[i]->setEnabled(true);
+    radioButton0->setVisible(true);
     radioButton1->setVisible(true);
     radioButton2->setVisible(true);
     radioButton3->setVisible(true);
@@ -142,8 +143,8 @@ void ImageProcesser::changeToGray(){
     }
 
     //显示灰度直方图
-    showHistogram(showingImage);
-    showGrayInfo(showingImage);
+    showHistogram(grayimage);
+    showGrayInfo(grayimage);
 }
 
 //将8位灰度图像转换为8幅位平面二值图
