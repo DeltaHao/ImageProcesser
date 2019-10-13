@@ -71,7 +71,7 @@ void ImageProcesser::showGrayInfo(QImage grayimage){
         }
     }
     grayInfo[0] = graySum / grayInfo[3];
-    //todo: 中值灰度？？？
+    // 中值灰度
     int count = 0;
     int i=0;
     for (i=0; i<256; i++) {

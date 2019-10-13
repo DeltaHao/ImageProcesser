@@ -70,6 +70,73 @@ void ImageProcesser::showBalanceImage(){
     showGrayInfo(showingImage);
 }
 
+//显示优化后的均衡处理图片（BBHE方法）
+void ImageProcesser::showNewBalanceImage(){
+    spinbox1->setVisible(false);
+    spinbox2_1->setVisible(false);
+    spinbox2_2->setVisible(false);
+    spinbox3_1->setVisible(false);
+    spinbox3_2->setVisible(false);
+
+    //将图像分成灰度大于平均值与小于平均值的两部分， 分别进行均衡化处理
+    int width = image.width();
+    int height = image.height();
+    QImage tmp(width, height, QImage::Format_Indexed8);
+    tmp.setColorCount(256);
+    for(int i=0;i<256;i++){
+        tmp.setColor(i,qRgb(i,i,i));
+    }
+
+    int grays[256]{0};
+    int f1count = 0 , f2count = 0;//分别记录f1与f2的像素数量
+    for(int i=0; i<width; i++){
+        for(int j=0; j<height; j++){
+            int index = grayimage.pixelIndex(i, j);
+            ++grays[index];
+            if(index < int(grayInfo[0]))
+                f1count++;
+            else f2count++;
+        }
+    }
+
+    double P[256]{0};
+    //均衡化f1
+    for(int i=0; i<grayInfo[0]; i++){
+        if(!i)
+            P[i] = double(grays[i]) / f1count;
+        else{
+            P[i] = P[i-1] + double(grays[i]) / f1count;
+        }
+    }
+    //均衡化f2
+    for( int i=int(grayInfo[0])+1; i<256; i++){
+        if(i == int(grayInfo[0])+1)
+            P[i] = double(grays[i])  / f2count;
+        else{
+            P[i] = P[i-1] + double(grays[i]) / f2count;
+        }
+    }
+    //生成新图像
+    for(int i=0; i<width; i++){
+        for(int j=0; j<height; j++){
+            int newPix;
+            if(grayimage.pixelIndex(i, j) > int(grayInfo[0]))
+                newPix = grayimage.pixelIndex(i, j) * P[grayimage.pixelIndex(i, j)] + int(grayInfo[0])*P[int(grayInfo[0])];
+            else
+            newPix = grayimage.pixelIndex(i, j) * P[grayimage.pixelIndex(i, j)];
+            if(newPix > 255) newPix = 255;
+            tmp.setPixel(i, j, newPix);
+        }
+    }
+
+    showingImage = tmp;
+    imageLabel->setPixmap(QPixmap::fromImage(showingImage));
+
+    showHistogram(showingImage);
+    showGrayInfo(showingImage);
+
+}
+
 //根据阈值灰度生成二值图
 void ImageProcesser::showSpinBox1(){
     spinbox2_1->setVisible(false);

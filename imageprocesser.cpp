@@ -20,7 +20,8 @@ ImageProcesser::ImageProcesser():
     spinbox3_1(new QDoubleSpinBox),
     spinbox3_2(new QDoubleSpinBox),
     radioButton3(new QRadioButton("非线性变换：")),
-    radioButton4(new QRadioButton("均衡处理"))
+    radioButton4(new QRadioButton("传统均衡")),
+    radioButton5(new QRadioButton("优化均衡"))
 {
     setCentralWidget(widget);//设置窗口中心部件
     //图片Label
@@ -41,6 +42,8 @@ ImageProcesser::ImageProcesser():
     //“均衡处理”按钮
     radioButton4->setVisible(false);
     connect(radioButton4, SIGNAL(clicked()), this, SLOT(showBalanceImage()));
+    radioButton5->setVisible(false);
+    connect(radioButton5, SIGNAL(clicked()), this, SLOT(showNewBalanceImage()));
     //调节框1
     radioButton1->setVisible(false);
     spinbox1->setVisible(false);
@@ -67,6 +70,7 @@ ImageProcesser::ImageProcesser():
     mainLayout->addWidget(GrayInfo, 1, 3, 3, 3);
     mainLayout->addWidget(radioButton0, 1, 0, 1, 1);
     mainLayout->addWidget(radioButton4, 1, 1, 1, 1);
+    mainLayout->addWidget(radioButton5, 1, 2, 1, 1);
     mainLayout->addWidget(radioButton1, 2, 0, 1, 1);
     mainLayout->addWidget(spinbox1, 2, 2, 1, 1);
     mainLayout->addWidget(radioButton2, 3, 0, 1, 1);

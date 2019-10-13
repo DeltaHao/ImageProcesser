@@ -46,6 +46,7 @@ private slots://私有槽函数
     void showUnlinearImage1(double a);//中值对比度
     void showUnlinearImage2(double b);//暗部增强
     void showBalanceImage();//显示均衡处理后的图片
+    void showNewBalanceImage();//显示优化后的均衡处理
     void showCommenImage();//显示原图
 private:
     //私有函数
@@ -80,6 +81,7 @@ private:
     QDoubleSpinBox *spinbox3_2;
     QRadioButton *radioButton3;
     QRadioButton *radioButton4;
+    QRadioButton *radioButton5;
 
     //菜单命令
     QAction *saveAsAct;

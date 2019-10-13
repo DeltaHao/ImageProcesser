@@ -68,6 +68,7 @@ void ImageProcesser::setImage(){
     radioButton2->setVisible(true);
     radioButton3->setVisible(true);
     radioButton4->setVisible(true);
+    radioButton5->setVisible(true);
 
     showHistogram(grayimage);//构建直方图
     showGrayInfo(grayimage);//展示直方图相关信息
