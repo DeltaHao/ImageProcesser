@@ -45,6 +45,8 @@ private slots://私有槽函数
     void showSpinBox3();//显示非线性变换调节框
     void showUnlinearImage1(double a);//中值对比度
     void showUnlinearImage2(double b);//暗部增强
+    void showBalanceImage();//显示均衡处理后的图片
+    void showCommenImage();//显示原图
 private:
     //私有函数
     void createActions();//创造命令
@@ -53,7 +55,7 @@ private:
     void setImage();
     void toGray();
     void toBitplane();
-    void showHistogram(QImage);
+    void showHistogram(QImage);//显示灰度直方图
     void showGrayInfo(QImage);//展示灰度的信息
 
     //实体成员
@@ -61,7 +63,7 @@ private:
     QImage grayimage;//灰度图像
     double grayInfo[4];//灰度图像的四个相关信息：平均灰度、中值灰度、标准差和像素总数
     QImage bitplaneimage[8];//8幅位平面二值图
-    QImage showingImage;
+    QImage showingImage;//正在展示的图像
     //控件
     QWidget *widget;
     QLabel *imageLabel;
@@ -77,6 +79,7 @@ private:
     QDoubleSpinBox *spinbox3_1;
     QDoubleSpinBox *spinbox3_2;
     QRadioButton *radioButton3;
+    QRadioButton *radioButton4;
 
     //菜单命令
     QAction *saveAsAct;

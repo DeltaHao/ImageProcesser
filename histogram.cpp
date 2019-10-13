@@ -92,8 +92,8 @@ void ImageProcesser::showGrayInfo(QImage grayimage){
 
 
     //展示灰度信息
-    GrayInfo->setMargin(20);
-    GrayInfo->setText(tr("平均灰度：%1  中值灰度：%2  标准差：%3  像素总数：%4")
+    GrayInfo->setMargin(0);
+    GrayInfo->setText(tr("               平均灰度：%1  中值灰度：%2  标准差：%3  像素总数：%4")
                        .arg(grayInfo[0]).arg(grayInfo[1]).arg(grayInfo[2]).arg(grayInfo[3]));
     GrayInfo->setVisible(true);
 }

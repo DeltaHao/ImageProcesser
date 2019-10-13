@@ -56,6 +56,7 @@ void ImageProcesser::setImage(){
     //将图像显示在imageLabel上
     showingImage = image;
     imageLabel->setPixmap(QPixmap::fromImage(showingImage));
+
     //以下控件可见或启用
     scrollArea->setVisible(true);
     saveAsAct->setEnabled(true);
@@ -66,6 +67,7 @@ void ImageProcesser::setImage(){
     radioButton1->setVisible(true);
     radioButton2->setVisible(true);
     radioButton3->setVisible(true);
+    radioButton4->setVisible(true);
 
     showHistogram(grayimage);//构建直方图
     showGrayInfo(grayimage);//展示直方图相关信息
@@ -100,10 +102,26 @@ void ImageProcesser::saveAs()
 
 //关于
 void ImageProcesser::about1(){
-    QMessageBox:: about(this, tr("作者"),tr("<p>作者：郝正亮</p><p>学号：1120172919</p>"));
+    QMessageBox:: about(this, tr("作者"),tr("<p>作者：郝正亮</p>"
+                                          "<p>学号：1120172919</p>"
+                                          ));
 }
 void ImageProcesser::about2(){
-    QMessageBox:: about(this, tr("项目介绍"),tr("<p>《数字图像处理》课程作业</p> 。。。"));
+    QMessageBox:: about(this, tr("项目介绍"),tr("\
+                                            <p>编程实现不同采样率和不同量化等级图像的显示效果。要求：</p>\
+                                            <ul>\
+                                            <li><del>只能使用C、C++、Java或Delphi等编程语言</del></li>\
+                                            <li><del>要求提供图形化显示界面</del></li>\
+                                            <li><del>要求有图像载入、保存和相关处理选项功能</del></li>\
+                                            <li><del>可以只考虑灰度图像</del></li>\
+                                            <li><del>编写代码，把8位灰度图转化为8幅位平面表示的二值图。</del></li>\
+                                            <li><del>在前两章的作业基础之上，添加直方图显示功能，并在直方图下方显示相关信息，如平均灰度、中值灰度、标准差和像素总数等</del></li>\
+                                            <li><del>同时，提供灵活交互方式确定阈值灰度，对输入图像进行阈值化产生一幅二值图像，要实时显示。（自己提供验证图像）</del></li>\
+                                            <li><del>在已有的程序框架上完成点运算，要求支持不少于两种线性和非线性的变换，要能显示变换前后的图像灰度直方图。</del></li>\
+                                            <li><del>对第二章之后的作业处理结果都支持直方图显示功能</del></li>\
+                                            <li>编写程序实现灰度直方图均衡算法，并参考相关文献，对传统的直方图均衡方法进行优化，给出优化前后的直方图比较。</li>\
+                                            </ul>"
+                                            "<p>项目源码：https://github.com/DeltaHao/ImageProcesser</p>"));
 }
 
 //转化为灰度图像
@@ -141,10 +159,6 @@ void ImageProcesser::changeToGray(){
         showingImage = grayimage;
         imageLabel->setPixmap(QPixmap::fromImage(showingImage));//显示灰度图
     }
-
-    //显示灰度直方图
-    showHistogram(grayimage);
-    showGrayInfo(grayimage);
 }
 
 //将8位灰度图像转换为8幅位平面二值图

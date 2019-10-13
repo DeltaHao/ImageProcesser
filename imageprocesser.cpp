@@ -19,7 +19,8 @@ ImageProcesser::ImageProcesser():
     radioButton0(new QRadioButton("显示原图")),
     spinbox3_1(new QDoubleSpinBox),
     spinbox3_2(new QDoubleSpinBox),
-    radioButton3(new QRadioButton("非线性变换："))
+    radioButton3(new QRadioButton("非线性变换：")),
+    radioButton4(new QRadioButton("均衡处理"))
 {
     setCentralWidget(widget);//设置窗口中心部件
     //图片Label
@@ -30,13 +31,16 @@ ImageProcesser::ImageProcesser():
     scrollArea->setBackgroundRole(QPalette::Dark);
     scrollArea->setWidget(imageLabel);//将scrollArea中的内容设置为imageLabel
     scrollArea->setVisible(false);//初始不可见
-    //直方图
+    //直方图    
     chartview->setVisible(false);
     GrayInfo->setVisible(false);
-
+    //“显示原图”按钮
     radioButton0->setChecked(true);
     radioButton0->setVisible(false);
-    connect(radioButton0, SIGNAL(clicked()), this, SLOT(changeToGray()));
+    connect(radioButton0, SIGNAL(clicked()), this, SLOT(showCommenImage()));
+    //“均衡处理”按钮
+    radioButton4->setVisible(false);
+    connect(radioButton4, SIGNAL(clicked()), this, SLOT(showBalanceImage()));
     //调节框1
     radioButton1->setVisible(false);
     spinbox1->setVisible(false);
@@ -60,8 +64,9 @@ ImageProcesser::ImageProcesser():
     QGridLayout *mainLayout = new QGridLayout;
     mainLayout->addWidget(scrollArea, 0, 0, 1, 3);
     mainLayout->addWidget(chartview, 0, 3, 1, 3);
-    mainLayout->addWidget(GrayInfo, 1, 3, 1, 3);
+    mainLayout->addWidget(GrayInfo, 1, 3, 3, 3);
     mainLayout->addWidget(radioButton0, 1, 0, 1, 1);
+    mainLayout->addWidget(radioButton4, 1, 1, 1, 1);
     mainLayout->addWidget(radioButton1, 2, 0, 1, 1);
     mainLayout->addWidget(spinbox1, 2, 2, 1, 1);
     mainLayout->addWidget(radioButton2, 3, 0, 1, 1);
@@ -83,7 +88,7 @@ ImageProcesser::ImageProcesser():
     resize(QGuiApplication::primaryScreen()->availableSize() * 3 / 5);//将窗口设置为默认的3/5大小
 }
 
-//创建行为（功能）函数
+//创建菜单动作
 void ImageProcesser::createActions(){
     //菜单栏-文件
     QMenu *fileMenu = menuBar()->addMenu(tr("&文件"));

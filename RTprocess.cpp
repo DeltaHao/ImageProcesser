@@ -4,6 +4,72 @@
 #include<QtWidgets>
 
 #define PI 3.1415926
+//显示原图
+void ImageProcesser::showCommenImage(){
+    changeToGrayAct->setChecked(true);
+
+    spinbox1->setVisible(false);
+    spinbox2_1->setVisible(false);
+    spinbox2_2->setVisible(false);
+    spinbox3_1->setVisible(false);
+    spinbox3_2->setVisible(false);
+
+    showingImage = grayimage;
+    imageLabel->setPixmap(QPixmap::fromImage(showingImage));//显示灰度图
+    //显示灰度直方图
+    showHistogram(grayimage);
+    showGrayInfo(grayimage);
+}
+
+//显示均衡处理后的图片
+void ImageProcesser::showBalanceImage(){
+    spinbox1->setVisible(false);
+    spinbox2_1->setVisible(false);
+    spinbox2_2->setVisible(false);
+    spinbox3_1->setVisible(false);
+    spinbox3_2->setVisible(false);
+
+    int width = image.width();
+    int height = image.height();
+    QImage tmp(width, height, QImage::Format_Indexed8);
+    //设置灰度表
+    tmp.setColorCount(256);
+    for(int i=0;i<256;i++){
+        tmp.setColor(i,qRgb(i,i,i));
+    }
+    //求灰度分布概率
+    int grays[256]{0};
+    for(int i=0; i<width; i++){
+        for(int j=0; j<height; j++){
+            int index = grayimage.pixelIndex(i, j);
+            ++grays[index];
+        }
+    }
+    double P[256];
+    for(int i=0; i<256; i++){
+        if(!i)
+            P[i] = double(grays[i]) / grayInfo[3];
+        else{
+            P[i] = P[i-1] + double(grays[i]) / grayInfo[3];
+        }
+    }
+
+    //生成新图像
+    for(int i=0; i<width; i++){
+        for(int j=0; j<height; j++){
+           int newPix = grayimage.pixelIndex(i, j) * P[grayimage.pixelIndex(i, j)];
+           if(newPix > 255) newPix = 255;
+           tmp.setPixel(i, j, newPix);
+        }
+    }
+
+    showingImage = tmp;
+    imageLabel->setPixmap(QPixmap::fromImage(showingImage));
+
+    showHistogram(showingImage);
+    showGrayInfo(showingImage);
+}
+
 //根据阈值灰度生成二值图
 void ImageProcesser::showSpinBox1(){
     spinbox2_1->setVisible(false);
@@ -18,7 +84,6 @@ void ImageProcesser::showSpinBox1(){
     showBinaryImage(spinbox1->value());
 
 }
-
 void ImageProcesser::showBinaryImage(int threshold){
     int h = image.height();
     int w = image.width();
@@ -55,7 +120,6 @@ void ImageProcesser::showSpinBox2(){
     spinbox2_2->setVisible(true);
     showlinearImage2(spinbox2_2->value());
 }
-
 void ImageProcesser::showlinearImage1(double a){
     spinbox2_2->setValue(0);
 
@@ -79,7 +143,6 @@ void ImageProcesser::showlinearImage1(double a){
     showHistogram(showingImage);
     showGrayInfo(showingImage);
 }
-
 void ImageProcesser::showlinearImage2(int b){
     spinbox2_1->setValue(1);
 
@@ -124,7 +187,6 @@ void ImageProcesser::showSpinBox3(){
     spinbox3_2->setVisible(true);
     showUnlinearImage2(spinbox3_2->value());
 }
-
 void ImageProcesser::showUnlinearImage1(double a){
     spinbox3_2->setValue(1);
 
@@ -150,7 +212,6 @@ void ImageProcesser::showUnlinearImage1(double a){
     showHistogram(showingImage);
     showGrayInfo(showingImage);
 }
-
 void ImageProcesser::showUnlinearImage2(double b){
     spinbox3_1->setValue(0.5);
 
