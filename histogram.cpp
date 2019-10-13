@@ -1,7 +1,9 @@
+/*灰度直方图相关*/
+
 #include<QtCharts>
 #include "imageprocesser.h"
 
-void ImageProcesser::showHistogram(){
+void ImageProcesser::showHistogram(QImage grayimage){
     //  对直方图进行数据处理,求出各个灰度值的像素数
     int data[256]{0};
     int yRange = 0;
@@ -53,7 +55,7 @@ void ImageProcesser::showHistogram(){
     chartview->setVisible(true);
 }
 
-void ImageProcesser::showGrayInfo(){
+void ImageProcesser::showGrayInfo(QImage grayimage){
     int h = grayimage.height();
     int w = grayimage.width();
     int data[256]{0};

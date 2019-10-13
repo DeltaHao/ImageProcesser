@@ -1,3 +1,5 @@
+/*菜单动作*/
+
 #include "imageprocesser.h"
 #include <QtWidgets>
 #include <QtCharts>
@@ -60,13 +62,14 @@ void ImageProcesser::setImage(){
     changeToGrayAct->setEnabled(true);
     for(int i=0; i<8; i++)
         changeToBitplaneAct[i]->setEnabled(true);
+    radioButton1->setVisible(true);
+    radioButton2->setVisible(true);
+    radioButton3->setVisible(true);
 
-    showHistogram();//构建直方图
+    showHistogram(grayimage);//构建直方图
+    showGrayInfo(grayimage);//展示直方图相关信息
 
-    showGrayInfo();
 
-    radioButton->setVisible(true);
-    //showSpinBox();
 
     imageLabel->adjustSize();//imageLabel的大小可调整
 }
@@ -137,6 +140,10 @@ void ImageProcesser::changeToGray(){
         showingImage = grayimage;
         imageLabel->setPixmap(QPixmap::fromImage(showingImage));//显示灰度图
     }
+
+    //显示灰度直方图
+    showHistogram(showingImage);
+    showGrayInfo(showingImage);
 }
 
 //将8位灰度图像转换为8幅位平面二值图

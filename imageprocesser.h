@@ -37,8 +37,11 @@ private slots://私有槽函数
     void changeToBitplane6();
     void changeToBitplane7();
     void changeToBitplane8();
-    void showSpinBox();//显示阈值灰度调节框
+    void showSpinBox1();//显示阈值灰度调节框
     void showBinaryImage(int threshold);//根据阈值灰度生成二值图
+    void showSpinBox2();//显示线性变换调节框
+    void showlinearImage1(double a);//对比度变化
+    void showlinearImage2(int b);//亮度变化
 private:
     //私有函数
     void createActions();//创造命令
@@ -47,8 +50,8 @@ private:
     void setImage();
     void toGray();
     void toBitplane();
-    void showHistogram();
-    void showGrayInfo();//展示灰度的信息
+    void showHistogram(QImage);
+    void showGrayInfo(QImage);//展示灰度的信息
 
     //实体成员
     QImage image;//原图像
@@ -62,10 +65,14 @@ private:
     QScrollArea *scrollArea;
     QChartView *chartview;
     QLabel *GrayInfo;
-    QSpinBox *spinbox;
-    QRadioButton *radioButton;
+    QSpinBox *spinbox1;
+    QRadioButton *radioButton1;
+    QDoubleSpinBox *spinbox2_1;
+    QSpinBox *spinbox2_2;
+    QRadioButton *radioButton2;
+    QRadioButton *radioButton3;
 
-    //一些要用到的命令
+    //菜单命令
     QAction *saveAsAct;
     QAction *changeToGrayAct;
     QAction *changeToBitplaneAct[8];

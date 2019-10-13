@@ -30,7 +30,7 @@ SOURCES += \
         imageprocesser.cpp \
     histogram.cpp \
     actions.cpp \
-    thresholdgary.cpp
+    RTprocess.cpp
 
 HEADERS += \
         imageprocesser.h

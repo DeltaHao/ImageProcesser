@@ -1,3 +1,5 @@
+/*构造函数*/
+
 #include "imageprocesser.h"
 #include <QtWidgets>
 #include <QtCharts>
@@ -9,8 +11,12 @@ ImageProcesser::ImageProcesser():
     scrollArea(new QScrollArea),
     chartview(new QChartView),
     GrayInfo(new QLabel),
-    spinbox(new QSpinBox),
-    radioButton(new QRadioButton("根据阈值灰度生成二值图："))
+    spinbox1(new QSpinBox),
+    radioButton1(new QRadioButton("根据阈值灰度生成二值图：")),
+    spinbox2_1(new QDoubleSpinBox),
+    spinbox2_2(new QSpinBox),
+    radioButton2(new QRadioButton("线性变换：")),
+    radioButton3(new QRadioButton("显示原图"))
 {
     setCentralWidget(widget);//设置窗口中心部件
     //图片Label
@@ -24,21 +30,37 @@ ImageProcesser::ImageProcesser():
     //直方图
     chartview->setVisible(false);
     GrayInfo->setVisible(false);
-    //调节框
-    radioButton->setVisible(false);
-    spinbox->setVisible(false);
-    connect(radioButton, SIGNAL(clicked()), this, SLOT(showSpinBox()));
-    connect(spinbox, SIGNAL(valueChanged(int)), this, SLOT(showBinaryImage(int)));
+
+    radioButton3->setChecked(true);
+    radioButton3->setVisible(false);
+    connect(radioButton3, SIGNAL(clicked()), this, SLOT(changeToGray()));
+    //调节框1
+    radioButton1->setVisible(false);
+    spinbox1->setVisible(false);
+    connect(radioButton1, SIGNAL(clicked()), this, SLOT(showSpinBox1()));
+    connect(spinbox1, SIGNAL(valueChanged(int)), this, SLOT(showBinaryImage(int)));
+    //调节框2
+    radioButton2->setVisible(false);
+    spinbox2_1->setVisible(false);
+    spinbox2_2->setVisible(false);
+    connect(radioButton2, SIGNAL(clicked()), this, SLOT(showSpinBox2()));
+    connect(spinbox2_1, SIGNAL(valueChanged(double)), this, SLOT(showlinearImage1(double)));
+    connect(spinbox2_2, SIGNAL(valueChanged(int)), this, SLOT(showlinearImage2(int)));
     //设置布局
     QGridLayout *mainLayout = new QGridLayout;
     mainLayout->addWidget(scrollArea, 0, 0, 1, 3);
     mainLayout->addWidget(chartview, 0, 3, 1, 3);
     mainLayout->addWidget(GrayInfo, 1, 3, 1, 3);
-    mainLayout->addWidget(radioButton, 1, 0, 1, 1);
-    mainLayout->addWidget(spinbox, 1, 2, 1, 1);
+    mainLayout->addWidget(radioButton3, 1, 0, 1, 1);
+    mainLayout->addWidget(radioButton1, 2, 0, 1, 1);
+    mainLayout->addWidget(spinbox1, 2, 2, 1, 1);
+    mainLayout->addWidget(radioButton2, 3, 0, 1, 1);
+    mainLayout->addWidget(spinbox2_1, 3, 1, 1, 1);
+    mainLayout->addWidget(spinbox2_2, 3, 2, 1, 1);
     //行列比例
     mainLayout->setColumnStretch(0, 1);
     mainLayout->setColumnStretch(1, 1);
+    mainLayout->setColumnStretch(2, 1);
     mainLayout->setRowStretch(0, 5);
     mainLayout->setRowStretch(1, 1);
     widget->setLayout(mainLayout);
