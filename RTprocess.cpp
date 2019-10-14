@@ -1,7 +1,6 @@
 /*实时处理相关*/
 
 #include"imageprocesser.h"
-#include<QtWidgets>
 
 #define PI 3.1415926
 //显示原图

@@ -1,8 +1,6 @@
 /*菜单动作*/
 
 #include "imageprocesser.h"
-#include <QtWidgets>
-#include <QtCharts>
 
 //初始化文件选择对话框
 static void initializeImageFileDialog(QFileDialog &dialog){
