@@ -1,6 +1,5 @@
 /*灰度直方图相关*/
 
-#include<QtCharts>
 #include "imageprocesser.h"
 
 void ImageProcesser::showHistogram(QImage grayimage){

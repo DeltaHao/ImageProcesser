@@ -1,8 +1,6 @@
 /*构造函数*/
 
 #include "imageprocesser.h"
-#include <QtWidgets>
-#include <QtCharts>
 
 //构造函数
 ImageProcesser::ImageProcesser():

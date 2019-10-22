@@ -1,10 +1,6 @@
 #ifndef IMAGEPROCESSER_H
 #define IMAGEPROCESSER_H
 
-
-#include <QMainWindow>
-#include <QImage>
-#include <QPainter>
 #include <QtCharts>
 
 //一些要用到的类
