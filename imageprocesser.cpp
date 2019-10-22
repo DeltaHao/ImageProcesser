@@ -25,7 +25,7 @@ ImageProcesser::ImageProcesser():
     spinbox6_2(new QSpinBox),
     radioButton6(new QRadioButton("图像平移：")),
     spinbox7(new QDoubleSpinBox),
-    radioButton7(new QRadioButton("图像旋转")),
+    radioButton7(new QRadioButton("图像旋转：")),
     spinbox8_1(new QDoubleSpinBox),
     spinbox8_2(new QDoubleSpinBox),
     radioButton8(new QRadioButton("图像缩放："))
@@ -82,7 +82,7 @@ ImageProcesser::ImageProcesser():
     radioButton7->setVisible(false);
     spinbox7->setVisible(false);
     connect(radioButton7, SIGNAL(clicked()), this, SLOT(showSpinBox7()));
-    connect(spinbox7, SIGNAL(valueChanged(int)), this, SLOT(showRotation(double)));
+    connect(spinbox7, SIGNAL(valueChanged(double)), this, SLOT(showRotation(double)));
     //调节框8
     radioButton8->setVisible(false);
     spinbox8_1->setVisible(false);

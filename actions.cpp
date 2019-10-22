@@ -51,6 +51,8 @@ bool ImageProcesser::loadFile(const QString &fileName){
     return true;
 }
 void ImageProcesser::setImage(){
+    radioButton0->setChecked(true);
+    hideSpinBoxes();
     //将图像显示在imageLabel上
     showingImage = image;
     scaleFactor = 1.0;
@@ -74,6 +76,7 @@ void ImageProcesser::setImage(){
     radioButton6->setVisible(true);
     radioButton7->setVisible(true);
     radioButton8->setVisible(true);
+
 
     showHistogram(grayimage);//构建直方图
     showGrayInfo(grayimage, grayInfo);//展示直方图相关信息

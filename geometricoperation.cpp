@@ -1,6 +1,7 @@
 /*几何运算*/
 #include"imageprocesser.h"
 
+#define PI 3.1415926
 //平移
 void ImageProcesser::showSpinBox6(){
     hideSpinBoxes();
@@ -114,11 +115,59 @@ void ImageProcesser::showSpinBox7(){
     spinbox7->setPrefix("旋转");
     spinbox7->setSuffix(" 度");
     spinbox7->setSingleStep(10);
-    spinbox7->setRange(-180, +180);
+    spinbox7->setRange(-90, +90);
+    spinbox7->setValue(0);
     spinbox7->setVisible(true);
 }
 void ImageProcesser::showRotation(double angle){
-    //todo
+    double R = PI*angle/180.0;//弧度
+    int w = image.width();
+    int h = image.height();
+    //确定画布大小
+    int newW = (int)(std::abs(w*cos(R)) + std::abs(h*sin(R)) + 0.5);
+    int newH = (int)(std::abs(w*sin(R)) + std::abs(h*cos(R)) + 0.5);
+    //建立新图片
+    QImage tmp(newW, newH, QImage::Format_Indexed8);
+    tmp.setColorCount(256);
+    for(int i=0;i<256;i++)
+        tmp.setColor(i,qRgb(i,i,i));
+
+    if(angle>=0){
+        int Offset = (int) (h*sin(R));
+        for(int i=0; i<newW; i++){
+            for(int j=0; j<newH; j++){
+                int old_i = (int)((i-Offset)*cos(R) + (j)*sin(R) + 0.5);
+                int old_j = (int)(-(i-Offset)*sin(R) + (j)*cos(R) + 0.5);
+                if(old_i<0 || old_i >= w || old_j<0 || old_j >= h)
+                    tmp.setPixel(i, j, 255);
+                else{
+                    int index = grayimage.pixelIndex(old_i, old_j);
+                    tmp.setPixel(i, j, index);
+                }
+            }
+        }
+    }
+    else{
+        int Offset = (int) (w*sin(R));
+        for(int i=0; i<newW; i++){
+            for(int j=0; j<newH; j++){
+                int old_i = (int) ((i)*cos(R) + (j+Offset)*sin(R) + 0.5);
+                int old_j = (int) (-(i)*sin(R) + (j+Offset)*cos(R) + 0.5);
+                if(old_i<0 || old_i >= w || old_j<0 || old_j >= h)
+                    tmp.setPixel(i, j, 255);
+                else{
+                    int index = grayimage.pixelIndex(old_i, old_j);
+                    tmp.setPixel(i, j, index);
+                }
+            }
+        }
+    }
+    showingImage = tmp;
+    imageLabel->setPixmap(QPixmap::fromImage(showingImage));
+    imageLabel->adjustSize();//imageLabel的大小可调整
+
+    showHistogram(showingImage);
+    showGrayInfo(showingImage, showingGrayInfo);
 }
 
 //缩放
@@ -127,19 +176,20 @@ void ImageProcesser::showSpinBox8(){
 
     spinbox8_1->setPrefix("最近邻插值法：");
     spinbox8_1->setSuffix("倍");
-    spinbox8_1->setSingleStep(10);
+    spinbox8_1->setSingleStep(0.1);
     spinbox8_1->setRange(-1000, +1000);
     spinbox8_1->setValue(1);
     spinbox8_1->setVisible(true);
 
     spinbox8_2->setPrefix("双线性插值法：");
     spinbox8_2->setSuffix("倍");
-    spinbox8_2->setSingleStep(10);
+    spinbox8_2->setSingleStep(0.1);
     spinbox8_2->setRange(-1000, +1000);
     spinbox8_2->setValue(1);
     spinbox8_2->setVisible(true);
 }
 void ImageProcesser::nearstInterpolation(double factor){
+
     //todo
 }
 void ImageProcesser::bilinearInterpolation(double factor){
