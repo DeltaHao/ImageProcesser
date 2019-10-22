@@ -12,7 +12,7 @@ void ImageProcesser::showHistogram(QImage grayimage){
         for(int j = 0; j < height; j++){
             int index;
             if(grayimage.format() == QImage::Format_Mono){//如果是二值图
-                if(grayimage.pixelIndex(i, j)) index = 255;
+                if(!grayimage.pixelIndex(i, j)) index = 255;
                 else index = 0;
             }
             else

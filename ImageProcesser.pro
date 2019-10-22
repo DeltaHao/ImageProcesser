@@ -30,7 +30,8 @@ SOURCES += \
         imageprocesser.cpp \
     histogram.cpp \
     actions.cpp \
-    RTprocess.cpp
+    pointOperation.cpp \
+    geometricoperation.cpp
 
 HEADERS += \
         imageprocesser.h

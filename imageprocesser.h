@@ -36,6 +36,10 @@ private slots://私有槽函数
     void zoomIn();//放大显示
     void zoomOut();//缩小显示
     void normalSize();//原始大小
+
+    void showCommenImage();//显示原图
+    void showBalanceImage();//显示均衡处理后的图片
+    void showNewBalanceImage();//显示优化后的均衡处理
     void showSpinBox1();//显示阈值灰度调节框
     void showBinaryImage(int threshold);//根据阈值灰度生成二值图
     void showSpinBox2();//显示线性变换调节框
@@ -44,9 +48,9 @@ private slots://私有槽函数
     void showSpinBox3();//显示非线性变换调节框
     void showUnlinearImage1(double a);//中值对比度
     void showUnlinearImage2(double b);//暗部增强
-    void showBalanceImage();//显示均衡处理后的图片
-    void showNewBalanceImage();//显示优化后的均衡处理
-    void showCommenImage();//显示原图
+    void showSpinBox6();//显示平移调节框
+    void showTranslation1(int);//x轴平移
+    void showTranslation2(int);//y轴平移
 private:
     //私有函数
     void createActions();//创造命令
@@ -68,23 +72,26 @@ private:
     QImage showingImage;//正在展示的图像
     double showingGrayInfo[4];//正在展示的图像的四个相关信息：平均灰度、中值灰度、标准差和像素总数
     //控件
-    QWidget *widget;
-    QLabel *imageLabel;
-    QScrollArea *scrollArea;
-    QChartView *chartview;
+    QWidget *widget;    
+    QLabel *imageLabel;    
+    QScrollArea *scrollArea;    
+    QChartView *chartview;    
     QLabel *GrayInfo;
+
+    QRadioButton *radioButton0;
     QSpinBox *spinbox1;
-    QRadioButton *radioButton1;
+    QRadioButton *radioButton1;    
     QDoubleSpinBox *spinbox2_1;
     QSpinBox *spinbox2_2;
     QRadioButton *radioButton2;
-    QRadioButton *radioButton0;
     QDoubleSpinBox *spinbox3_1;
     QDoubleSpinBox *spinbox3_2;
-    QRadioButton *radioButton3;
-    QRadioButton *radioButton4;
+    QRadioButton *radioButton3;    
+    QRadioButton *radioButton4;    
     QRadioButton *radioButton5;
-
+    QSpinBox *spinbox6_1;
+    QSpinBox *spinbox6_2;
+    QRadioButton *radioButton6;
     //菜单命令
     QAction *saveAsAct;
     QAction *changeToGrayAct;

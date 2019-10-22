@@ -1,4 +1,4 @@
-/*实时处理相关*/
+/*点运算*/
 
 #include"imageprocesser.h"
 
@@ -10,6 +10,8 @@ void ImageProcesser::hideSpinBoxes(){
     spinbox2_2->setVisible(false);
     spinbox3_1->setVisible(false);
     spinbox3_2->setVisible(false);
+    spinbox6_1->setVisible(false);
+    spinbox6_2->setVisible(false);
 }
 
 //显示原图
@@ -170,7 +172,6 @@ void ImageProcesser::showSpinBox2(){
     spinbox2_1->setSuffix("倍");
     spinbox2_1->setRange(0, 255);
     spinbox2_1->setSingleStep(0.1);
-    //spinbox2_1->setValue(0);
     spinbox2_1->setVisible(true);
     showlinearImage1(spinbox2_1->value());
 

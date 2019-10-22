@@ -71,9 +71,11 @@ void ImageProcesser::setImage(){
     radioButton3->setVisible(true);
     radioButton4->setVisible(true);
     radioButton5->setVisible(true);
+    radioButton6->setVisible(true);
 
     showHistogram(grayimage);//构建直方图
     showGrayInfo(grayimage, grayInfo);//展示直方图相关信息
+
     imageLabel->adjustSize();//imageLabel的大小可调整
 }
 
