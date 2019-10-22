@@ -51,6 +51,11 @@ private slots://私有槽函数
     void showSpinBox6();//显示平移调节框
     void showTranslation1(int);//x轴平移
     void showTranslation2(int);//y轴平移
+    void showSpinBox7();//显示旋转调节框
+    void showRotation(double);//旋转
+    void showSpinBox8();//缩放
+    void nearstInterpolation(double);//最近邻插值法缩放
+    void bilinearInterpolation(double);//双线性插值法缩放
 private:
     //私有函数
     void createActions();//创造命令
@@ -92,6 +97,11 @@ private:
     QSpinBox *spinbox6_1;
     QSpinBox *spinbox6_2;
     QRadioButton *radioButton6;
+    QDoubleSpinBox *spinbox7;
+    QRadioButton *radioButton7;
+    QDoubleSpinBox *spinbox8_1;
+    QDoubleSpinBox *spinbox8_2;
+    QRadioButton *radioButton8;
     //菜单命令
     QAction *saveAsAct;
     QAction *changeToGrayAct;

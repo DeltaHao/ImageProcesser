@@ -8,16 +8,17 @@ void ImageProcesser::showSpinBox6(){
     spinbox6_1->setPrefix("x轴：");
     spinbox6_1->setSingleStep(10);
     spinbox6_1->setRange(-1000, +1000);
+    spinbox6_1->setValue(0);
     spinbox6_1->setVisible(true);
 
     spinbox6_2->setPrefix("y轴：");
     spinbox6_2->setSingleStep(10);
     spinbox6_2->setRange(-1000, +1000);
+    spinbox6_2->setValue(0);
     spinbox6_2->setVisible(true);
 }
 void ImageProcesser::showTranslation1(int len){
     spinbox6_2->setValue(0);
-
     int h = image.height();
     int w = image.width();
     QImage tmp(w+abs(len), h, QImage::Format_Indexed8);
@@ -60,7 +61,6 @@ void ImageProcesser::showTranslation1(int len){
     showHistogram(showingImage);
     showGrayInfo(showingImage, showingGrayInfo);
 }
-
 void ImageProcesser::showTranslation2(int len){
     spinbox6_1->setValue(0);
 
@@ -105,4 +105,43 @@ void ImageProcesser::showTranslation2(int len){
 
     showHistogram(showingImage);
     showGrayInfo(showingImage, showingGrayInfo);
+}
+
+//旋转
+void ImageProcesser::showSpinBox7(){
+    hideSpinBoxes();
+
+    spinbox7->setPrefix("旋转");
+    spinbox7->setSuffix(" 度");
+    spinbox7->setSingleStep(10);
+    spinbox7->setRange(-180, +180);
+    spinbox7->setVisible(true);
+}
+void ImageProcesser::showRotation(double angle){
+    //todo
+}
+
+//缩放
+void ImageProcesser::showSpinBox8(){
+    hideSpinBoxes();
+
+    spinbox8_1->setPrefix("最近邻插值法：");
+    spinbox8_1->setSuffix("倍");
+    spinbox8_1->setSingleStep(10);
+    spinbox8_1->setRange(-1000, +1000);
+    spinbox8_1->setValue(1);
+    spinbox8_1->setVisible(true);
+
+    spinbox8_2->setPrefix("双线性插值法：");
+    spinbox8_2->setSuffix("倍");
+    spinbox8_2->setSingleStep(10);
+    spinbox8_2->setRange(-1000, +1000);
+    spinbox8_2->setValue(1);
+    spinbox8_2->setVisible(true);
+}
+void ImageProcesser::nearstInterpolation(double factor){
+    //todo
+}
+void ImageProcesser::bilinearInterpolation(double factor){
+    //todo
 }

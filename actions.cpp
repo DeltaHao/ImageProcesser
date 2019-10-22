@@ -55,7 +55,7 @@ void ImageProcesser::setImage(){
     showingImage = image;
     scaleFactor = 1.0;
     imageLabel->setPixmap(QPixmap::fromImage(showingImage));
-
+    imageLabel->adjustSize();//imageLabel的大小可调整
     //以下控件可见或启用
     scrollArea->setVisible(true);
     saveAsAct->setEnabled(true);
@@ -72,11 +72,13 @@ void ImageProcesser::setImage(){
     radioButton4->setVisible(true);
     radioButton5->setVisible(true);
     radioButton6->setVisible(true);
+    radioButton7->setVisible(true);
+    radioButton8->setVisible(true);
 
     showHistogram(grayimage);//构建直方图
     showGrayInfo(grayimage, grayInfo);//展示直方图相关信息
 
-    imageLabel->adjustSize();//imageLabel的大小可调整
+
 }
 
 //保存图片
@@ -157,10 +159,12 @@ void ImageProcesser::changeToGray(){
     if(!isChecked){//若未被选择
         showingImage = image;
         imageLabel->setPixmap(QPixmap::fromImage(showingImage));//显示原图
+        imageLabel->adjustSize();
     }
     else{//若被选择
         showingImage = grayimage;
-        imageLabel->setPixmap(QPixmap::fromImage(showingImage));//显示灰度图
+        imageLabel->adjustSize();//显示灰度图
+        imageLabel->adjustSize();
     }
 }
 
@@ -185,6 +189,7 @@ void ImageProcesser::changeToBitplane1(){
     int index = 0;
     showingImage = bitplaneimage[index];
     imageLabel->setPixmap(QPixmap::fromImage(showingImage));
+    imageLabel->adjustSize();
     for(int i=0; i<8; i++){
         if(i!=index) changeToBitplaneAct[i]->setChecked(false);
     }
@@ -194,6 +199,7 @@ void ImageProcesser::changeToBitplane2(){
     int index = 1;
     showingImage = bitplaneimage[index];
     imageLabel->setPixmap(QPixmap::fromImage(showingImage));
+    imageLabel->adjustSize();
     for(int i=0; i<8; i++){
         if(i!=index) changeToBitplaneAct[i]->setChecked(false);
     }
@@ -203,6 +209,7 @@ void ImageProcesser::changeToBitplane3(){
     int index = 2;
     showingImage = bitplaneimage[index];
     imageLabel->setPixmap(QPixmap::fromImage(showingImage));
+    imageLabel->adjustSize();
     for(int i=0; i<8; i++){
         if(i!=index) changeToBitplaneAct[i]->setChecked(false);
     }
@@ -212,6 +219,7 @@ void ImageProcesser::changeToBitplane4(){
     int index = 3;
     showingImage = bitplaneimage[index];
     imageLabel->setPixmap(QPixmap::fromImage(showingImage));
+    imageLabel->adjustSize();
     for(int i=0; i<8; i++){
         if(i!=index) changeToBitplaneAct[i]->setChecked(false);
     }
@@ -221,6 +229,7 @@ void ImageProcesser::changeToBitplane5(){
     int index = 4;
     showingImage = bitplaneimage[index];
     imageLabel->setPixmap(QPixmap::fromImage(showingImage));
+    imageLabel->adjustSize();
     for(int i=0; i<8; i++){
         if(i!=index) changeToBitplaneAct[i]->setChecked(false);
     }
@@ -230,6 +239,7 @@ void ImageProcesser::changeToBitplane6(){
     int index = 5;
     showingImage = bitplaneimage[index];
     imageLabel->setPixmap(QPixmap::fromImage(showingImage));
+    imageLabel->adjustSize();
     for(int i=0; i<8; i++){
         if(i!=index) changeToBitplaneAct[i]->setChecked(false);
     }
@@ -239,6 +249,7 @@ void ImageProcesser::changeToBitplane7(){
     int index = 6;
     showingImage = bitplaneimage[index];
     imageLabel->setPixmap(QPixmap::fromImage(showingImage));
+    imageLabel->adjustSize();
     for(int i=0; i<8; i++){
         if(i!=index) changeToBitplaneAct[i]->setChecked(false);
     }
@@ -247,6 +258,7 @@ void ImageProcesser::changeToBitplane8(){
     int index = 7;
     showingImage = bitplaneimage[index];
     imageLabel->setPixmap(QPixmap::fromImage(showingImage));
+    imageLabel->adjustSize();
     for(int i=0; i<8; i++){
         if(i!=index) changeToBitplaneAct[i]->setChecked(false);
     }

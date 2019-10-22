@@ -12,6 +12,9 @@ void ImageProcesser::hideSpinBoxes(){
     spinbox3_2->setVisible(false);
     spinbox6_1->setVisible(false);
     spinbox6_2->setVisible(false);
+    spinbox7->setVisible(false);
+    spinbox8_1->setVisible(false);
+    spinbox8_2->setVisible(false);
 }
 
 //显示原图
@@ -22,6 +25,7 @@ void ImageProcesser::showCommenImage(){
 
     showingImage = grayimage;
     imageLabel->setPixmap(QPixmap::fromImage(showingImage));//显示灰度图
+    imageLabel->adjustSize();
     //显示灰度直方图
     showHistogram(grayimage);
     showGrayInfo(grayimage, grayInfo);
@@ -67,6 +71,7 @@ void ImageProcesser::showBalanceImage(){
 
     showingImage = tmp;
     imageLabel->setPixmap(QPixmap::fromImage(showingImage));
+    imageLabel->adjustSize();
 
     showHistogram(showingImage);
     showGrayInfo(showingImage, showingGrayInfo);
@@ -129,6 +134,7 @@ void ImageProcesser::showNewBalanceImage(){
 
     showingImage = tmp;
     imageLabel->setPixmap(QPixmap::fromImage(showingImage));
+    imageLabel->adjustSize();
 
     showHistogram(showingImage);
     showGrayInfo(showingImage, showingGrayInfo);
@@ -159,6 +165,7 @@ void ImageProcesser::showBinaryImage(int threshold){
     }
     showingImage = tmp;
     imageLabel->setPixmap(QPixmap::fromImage(showingImage));
+    imageLabel->adjustSize();
 
     showHistogram(showingImage);
     GrayInfo->setVisible(false);
@@ -200,6 +207,7 @@ void ImageProcesser::showlinearImage1(double a){
     }
     showingImage = tmp;
     imageLabel->setPixmap(QPixmap::fromImage(showingImage));
+    imageLabel->adjustSize();
 
     showHistogram(showingImage);
     showGrayInfo(showingImage, showingGrayInfo);
@@ -224,6 +232,7 @@ void ImageProcesser::showlinearImage2(int b){
     }
     showingImage = tmp;
     imageLabel->setPixmap(QPixmap::fromImage(showingImage));
+    imageLabel->adjustSize();
 
     showHistogram(showingImage);
     showGrayInfo(showingImage, showingGrayInfo);
@@ -267,6 +276,7 @@ void ImageProcesser::showUnlinearImage1(double a){
     }
     showingImage = tmp;
     imageLabel->setPixmap(QPixmap::fromImage(showingImage));
+    imageLabel->adjustSize();
 
     showHistogram(showingImage);
     showGrayInfo(showingImage, showingGrayInfo);
@@ -292,6 +302,7 @@ void ImageProcesser::showUnlinearImage2(double b){
     }
     showingImage = tmp;
     imageLabel->setPixmap(QPixmap::fromImage(showingImage));
+    imageLabel->adjustSize();
 
     showHistogram(showingImage);
     showGrayInfo(showingImage, showingGrayInfo);

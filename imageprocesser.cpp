@@ -23,7 +23,12 @@ ImageProcesser::ImageProcesser():
     radioButton5(new QRadioButton("优化均衡")),
     spinbox6_1(new QSpinBox),
     spinbox6_2(new QSpinBox),
-    radioButton6(new QRadioButton("图像平移："))
+    radioButton6(new QRadioButton("图像平移：")),
+    spinbox7(new QDoubleSpinBox),
+    radioButton7(new QRadioButton("图像旋转")),
+    spinbox8_1(new QDoubleSpinBox),
+    spinbox8_2(new QDoubleSpinBox),
+    radioButton8(new QRadioButton("图像缩放："))
 {
     setCentralWidget(widget);//设置窗口中心部件
     //图片Label
@@ -33,6 +38,7 @@ ImageProcesser::ImageProcesser():
     //滚动框
     scrollArea->setBackgroundRole(QPalette::Dark);
     scrollArea->setWidget(imageLabel);//将scrollArea中的内容设置为imageLabel
+    scrollArea->setAlignment(Qt::AlignCenter);
     scrollArea->setVisible(false);//初始不可见
     //直方图    
     chartview->setVisible(false);
@@ -72,6 +78,18 @@ ImageProcesser::ImageProcesser():
     connect(radioButton6, SIGNAL(clicked()), this, SLOT(showSpinBox6()));
     connect(spinbox6_1, SIGNAL(valueChanged(int)), this, SLOT(showTranslation1(int)));
     connect(spinbox6_2, SIGNAL(valueChanged(int)), this, SLOT(showTranslation2(int)));
+    //调节框7
+    radioButton7->setVisible(false);
+    spinbox7->setVisible(false);
+    connect(radioButton7, SIGNAL(clicked()), this, SLOT(showSpinBox7()));
+    connect(spinbox7, SIGNAL(valueChanged(int)), this, SLOT(showRotation(double)));
+    //调节框8
+    radioButton8->setVisible(false);
+    spinbox8_1->setVisible(false);
+    spinbox8_2->setVisible(false);
+    connect(radioButton8, SIGNAL(clicked()), this, SLOT(showSpinBox8()));
+    connect(spinbox8_1, SIGNAL(valueChanged(double)), this, SLOT(nearstInterpolation(double)));
+    connect(spinbox8_2, SIGNAL(valueChanged(double)), this, SLOT(bilinearInterpolation(double)));
     //设置布局
     QGridLayout *mainLayout = new QGridLayout;
     mainLayout->addWidget(scrollArea, 0, 0, 2, 3);
@@ -92,6 +110,11 @@ ImageProcesser::ImageProcesser():
     mainLayout->addWidget(radioButton6, 2, 3, 1, 1);
     mainLayout->addWidget(spinbox6_1, 2, 4, 1, 1);
     mainLayout->addWidget(spinbox6_2, 2, 5, 1, 1);
+    mainLayout->addWidget(radioButton7, 3, 3, 1, 1);
+    mainLayout->addWidget(spinbox7, 3, 5, 1, 1);
+    mainLayout->addWidget(radioButton8, 4, 3, 1, 1);
+    mainLayout->addWidget(spinbox8_1, 4, 4, 1, 1);
+    mainLayout->addWidget(spinbox8_2, 4, 5, 1, 1);
     //行列比例
     mainLayout->setColumnStretch(0, 1);
     mainLayout->setColumnStretch(1, 1);
