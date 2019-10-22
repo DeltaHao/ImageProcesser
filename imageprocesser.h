@@ -56,8 +56,9 @@ private:
     void toGray();
     void toBitplane();
     void showHistogram(QImage);//显示灰度直方图
-    void showGrayInfo(QImage);//展示灰度的信息
-    void scaleImage(double factor);
+    void showGrayInfo(QImage, double*);//展示灰度的信息
+    void scaleImage(double factor);//缩放显示图像
+    void hideSpinBoxes();
     //实体成员
     QImage image;//原图像
     double scaleFactor;//图像的显示比例
@@ -65,6 +66,7 @@ private:
     double grayInfo[4];//灰度图像的四个相关信息：平均灰度、中值灰度、标准差和像素总数
     QImage bitplaneimage[8];//8幅位平面二值图
     QImage showingImage;//正在展示的图像
+    double showingGrayInfo[4];//正在展示的图像的四个相关信息：平均灰度、中值灰度、标准差和像素总数
     //控件
     QWidget *widget;
     QLabel *imageLabel;

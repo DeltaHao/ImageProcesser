@@ -64,26 +64,25 @@ ImageProcesser::ImageProcesser():
     connect(spinbox3_2, SIGNAL(valueChanged(double)), this, SLOT(showUnlinearImage2(double)));
     //设置布局
     QGridLayout *mainLayout = new QGridLayout;
-    mainLayout->addWidget(scrollArea, 0, 0, 1, 3);
-    mainLayout->addWidget(chartview, 0, 3, 1, 3);
-    mainLayout->addWidget(GrayInfo, 1, 3, 3, 3);
-    mainLayout->addWidget(radioButton0, 1, 0, 1, 1);
-    mainLayout->addWidget(radioButton4, 1, 1, 1, 1);
-    mainLayout->addWidget(radioButton5, 1, 2, 1, 1);
-    mainLayout->addWidget(radioButton1, 2, 0, 1, 1);
-    mainLayout->addWidget(spinbox1, 2, 2, 1, 1);
-    mainLayout->addWidget(radioButton2, 3, 0, 1, 1);
-    mainLayout->addWidget(spinbox2_1, 3, 1, 1, 1);
-    mainLayout->addWidget(spinbox2_2, 3, 2, 1, 1);
-    mainLayout->addWidget(radioButton3, 4, 0, 1, 1);
-    mainLayout->addWidget(spinbox3_1, 4, 1, 1, 1);
-    mainLayout->addWidget(spinbox3_2, 4, 2, 1, 1);
+    mainLayout->addWidget(scrollArea, 0, 0, 2, 3);
+    mainLayout->addWidget(chartview, 0, 3, 2, 3);
+    mainLayout->addWidget(GrayInfo, 1, 3, 1, 3);
+    mainLayout->addWidget(radioButton0, 2, 0, 1, 1);
+    mainLayout->addWidget(radioButton4, 2, 1, 1, 1);
+    mainLayout->addWidget(radioButton5, 2, 2, 1, 1);
+    mainLayout->addWidget(radioButton1, 3, 0, 1, 1);
+    mainLayout->addWidget(spinbox1, 3, 2, 1, 1);
+    mainLayout->addWidget(radioButton2, 4, 0, 1, 1);
+    mainLayout->addWidget(spinbox2_1, 4, 1, 1, 1);
+    mainLayout->addWidget(spinbox2_2, 4, 2, 1, 1);
+    mainLayout->addWidget(radioButton3, 5, 0, 1, 1);
+    mainLayout->addWidget(spinbox3_1, 5, 1, 1, 1);
+    mainLayout->addWidget(spinbox3_2, 5, 2, 1, 1);
     //行列比例
-    mainLayout->setColumnStretch(0, 1);
-    mainLayout->setColumnStretch(1, 1);
-    mainLayout->setColumnStretch(2, 1);
-    mainLayout->setRowStretch(0, 5);
+
+    mainLayout->setRowStretch(0, 19);
     mainLayout->setRowStretch(1, 1);
+    mainLayout->setRowStretch(2, 1);
     widget->setLayout(mainLayout);
 
     createActions();

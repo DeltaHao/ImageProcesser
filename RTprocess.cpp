@@ -3,30 +3,31 @@
 #include"imageprocesser.h"
 
 #define PI 3.1415926
-//显示原图
-void ImageProcesser::showCommenImage(){
-    changeToGrayAct->setChecked(true);
-
+//隐藏其它输入框
+void ImageProcesser::hideSpinBoxes(){
     spinbox1->setVisible(false);
     spinbox2_1->setVisible(false);
     spinbox2_2->setVisible(false);
     spinbox3_1->setVisible(false);
     spinbox3_2->setVisible(false);
+}
+
+//显示原图
+void ImageProcesser::showCommenImage(){
+    changeToGrayAct->setChecked(true);
+
+    hideSpinBoxes();
 
     showingImage = grayimage;
     imageLabel->setPixmap(QPixmap::fromImage(showingImage));//显示灰度图
     //显示灰度直方图
     showHistogram(grayimage);
-    showGrayInfo(grayimage);
+    showGrayInfo(grayimage, grayInfo);
 }
 
 //显示均衡处理后的图片
 void ImageProcesser::showBalanceImage(){
-    spinbox1->setVisible(false);
-    spinbox2_1->setVisible(false);
-    spinbox2_2->setVisible(false);
-    spinbox3_1->setVisible(false);
-    spinbox3_2->setVisible(false);
+    hideSpinBoxes();
 
     int width = image.width();
     int height = image.height();
@@ -66,16 +67,12 @@ void ImageProcesser::showBalanceImage(){
     imageLabel->setPixmap(QPixmap::fromImage(showingImage));
 
     showHistogram(showingImage);
-    showGrayInfo(showingImage);
+    showGrayInfo(showingImage, showingGrayInfo);
 }
 
 //显示优化后的均衡处理图片（BBHE方法）
 void ImageProcesser::showNewBalanceImage(){
-    spinbox1->setVisible(false);
-    spinbox2_1->setVisible(false);
-    spinbox2_2->setVisible(false);
-    spinbox3_1->setVisible(false);
-    spinbox3_2->setVisible(false);
+    hideSpinBoxes();
 
     //将图像分成灰度大于平均值与小于平均值的两部分， 分别进行均衡化处理
     int width = image.width();
@@ -132,16 +129,12 @@ void ImageProcesser::showNewBalanceImage(){
     imageLabel->setPixmap(QPixmap::fromImage(showingImage));
 
     showHistogram(showingImage);
-    showGrayInfo(showingImage);
-
+    showGrayInfo(showingImage, showingGrayInfo);
 }
 
 //根据阈值灰度生成二值图
 void ImageProcesser::showSpinBox1(){
-    spinbox2_1->setVisible(false);
-    spinbox2_2->setVisible(false);
-    spinbox3_1->setVisible(false);
-    spinbox3_2->setVisible(false);
+    hideSpinBoxes();
 
     spinbox1->setRange(0, 255);
     spinbox1->setSingleStep(16);
@@ -164,13 +157,14 @@ void ImageProcesser::showBinaryImage(int threshold){
     }
     showingImage = tmp;
     imageLabel->setPixmap(QPixmap::fromImage(showingImage));
+
+    showHistogram(showingImage);
+    GrayInfo->setVisible(false);
 }
 
 //线性变换
 void ImageProcesser::showSpinBox2(){
-    spinbox1->setVisible(false);
-    spinbox3_1->setVisible(false);
-    spinbox3_2->setVisible(false);
+    hideSpinBoxes();
 
     spinbox2_1->setPrefix("对比度：");
     spinbox2_1->setSuffix("倍");
@@ -207,7 +201,7 @@ void ImageProcesser::showlinearImage1(double a){
     imageLabel->setPixmap(QPixmap::fromImage(showingImage));
 
     showHistogram(showingImage);
-    showGrayInfo(showingImage);
+    showGrayInfo(showingImage, showingGrayInfo);
 }
 void ImageProcesser::showlinearImage2(int b){
     spinbox2_1->setValue(1);
@@ -231,14 +225,12 @@ void ImageProcesser::showlinearImage2(int b){
     imageLabel->setPixmap(QPixmap::fromImage(showingImage));
 
     showHistogram(showingImage);
-    showGrayInfo(showingImage);
+    showGrayInfo(showingImage, showingGrayInfo);
 }
 
 //非线性变换
 void ImageProcesser::showSpinBox3(){
-    spinbox1->setVisible(false);
-    spinbox2_1->setVisible(false);
-    spinbox2_2->setVisible(false);
+    hideSpinBoxes();
 
     spinbox3_1->setPrefix("中值对比度：");
     spinbox3_1->setRange(0.01, 1);
@@ -276,7 +268,7 @@ void ImageProcesser::showUnlinearImage1(double a){
     imageLabel->setPixmap(QPixmap::fromImage(showingImage));
 
     showHistogram(showingImage);
-    showGrayInfo(showingImage);
+    showGrayInfo(showingImage, showingGrayInfo);
 }
 void ImageProcesser::showUnlinearImage2(double b){
     spinbox3_1->setValue(0.5);
@@ -301,5 +293,5 @@ void ImageProcesser::showUnlinearImage2(double b){
     imageLabel->setPixmap(QPixmap::fromImage(showingImage));
 
     showHistogram(showingImage);
-    showGrayInfo(showingImage);
+    showGrayInfo(showingImage, showingGrayInfo);
 }

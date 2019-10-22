@@ -73,10 +73,7 @@ void ImageProcesser::setImage(){
     radioButton5->setVisible(true);
 
     showHistogram(grayimage);//构建直方图
-    showGrayInfo(grayimage);//展示直方图相关信息
-
-
-
+    showGrayInfo(grayimage, grayInfo);//展示直方图相关信息
     imageLabel->adjustSize();//imageLabel的大小可调整
 }
 
@@ -189,6 +186,7 @@ void ImageProcesser::changeToBitplane1(){
     for(int i=0; i<8; i++){
         if(i!=index) changeToBitplaneAct[i]->setChecked(false);
     }
+    showHistogram(showingImage);
 }
 void ImageProcesser::changeToBitplane2(){
     int index = 1;
@@ -197,6 +195,7 @@ void ImageProcesser::changeToBitplane2(){
     for(int i=0; i<8; i++){
         if(i!=index) changeToBitplaneAct[i]->setChecked(false);
     }
+    showHistogram(showingImage);
 }
 void ImageProcesser::changeToBitplane3(){
     int index = 2;
@@ -204,28 +203,36 @@ void ImageProcesser::changeToBitplane3(){
     imageLabel->setPixmap(QPixmap::fromImage(showingImage));
     for(int i=0; i<8; i++){
         if(i!=index) changeToBitplaneAct[i]->setChecked(false);
-    }}
+    }
+    showHistogram(showingImage);
+}
 void ImageProcesser::changeToBitplane4(){
     int index = 3;
     showingImage = bitplaneimage[index];
     imageLabel->setPixmap(QPixmap::fromImage(showingImage));
     for(int i=0; i<8; i++){
         if(i!=index) changeToBitplaneAct[i]->setChecked(false);
-    }}
+    }
+    showHistogram(showingImage);
+}
 void ImageProcesser::changeToBitplane5(){
     int index = 4;
     showingImage = bitplaneimage[index];
     imageLabel->setPixmap(QPixmap::fromImage(showingImage));
     for(int i=0; i<8; i++){
         if(i!=index) changeToBitplaneAct[i]->setChecked(false);
-    }}
+    }
+    showHistogram(showingImage);
+}
 void ImageProcesser::changeToBitplane6(){
     int index = 5;
     showingImage = bitplaneimage[index];
     imageLabel->setPixmap(QPixmap::fromImage(showingImage));
     for(int i=0; i<8; i++){
         if(i!=index) changeToBitplaneAct[i]->setChecked(false);
-    }}
+    }
+    showHistogram(showingImage);
+}
 void ImageProcesser::changeToBitplane7(){
     int index = 6;
     showingImage = bitplaneimage[index];
@@ -241,6 +248,7 @@ void ImageProcesser::changeToBitplane8(){
     for(int i=0; i<8; i++){
         if(i!=index) changeToBitplaneAct[i]->setChecked(false);
     }
+    showHistogram(showingImage);
 }
 
 

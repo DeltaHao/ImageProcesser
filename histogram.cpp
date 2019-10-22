@@ -10,7 +10,13 @@ void ImageProcesser::showHistogram(QImage grayimage){
     int height = grayimage.height();
     for(int i = 0; i <width; i++){
         for(int j = 0; j < height; j++){
-            int index = grayimage.pixelIndex(i, j);
+            int index;
+            if(grayimage.format() == QImage::Format_Mono){//如果是二值图
+                if(grayimage.pixelIndex(i, j)) index = 255;
+                else index = 0;
+            }
+            else
+                index = grayimage.pixelIndex(i, j);
             ++data[index];
         }
     }
@@ -54,7 +60,7 @@ void ImageProcesser::showHistogram(QImage grayimage){
     chartview->setVisible(true);
 }
 
-void ImageProcesser::showGrayInfo(QImage grayimage){
+void ImageProcesser::showGrayInfo(QImage grayimage, double *grayInfo){
     int h = grayimage.height();
     int w = grayimage.width();
     int data[256]{0};
@@ -91,8 +97,9 @@ void ImageProcesser::showGrayInfo(QImage grayimage){
 
 
     //展示灰度信息
-    GrayInfo->setMargin(0);
-    GrayInfo->setText(tr("               平均灰度：%1  中值灰度：%2  标准差：%3  像素总数：%4")
+    GrayInfo->setAlignment(Qt::AlignHCenter);
+
+    GrayInfo->setText(tr("平均灰度：%1  中值灰度：%2  标准差：%3  像素总数：%4")
                        .arg(grayInfo[0]).arg(grayInfo[1]).arg(grayInfo[2]).arg(grayInfo[3]));
     GrayInfo->setVisible(true);
 }
