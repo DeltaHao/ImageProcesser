@@ -53,12 +53,16 @@ bool ImageProcesser::loadFile(const QString &fileName){
 void ImageProcesser::setImage(){
     //将图像显示在imageLabel上
     showingImage = image;
+    scaleFactor = 1.0;
     imageLabel->setPixmap(QPixmap::fromImage(showingImage));
 
     //以下控件可见或启用
     scrollArea->setVisible(true);
     saveAsAct->setEnabled(true);
     changeToGrayAct->setEnabled(true);
+    zoomInAct->setEnabled(true);
+    zoomOutAct->setEnabled(true);
+    normalSizeAct->setEnabled(true);
     for(int i=0; i<8; i++)
         changeToBitplaneAct[i]->setEnabled(true);
     radioButton0->setVisible(true);
@@ -99,30 +103,31 @@ void ImageProcesser::saveAs()
     while (dialog.exec() == QDialog::Accepted && !saveFile(dialog.selectedFiles().first())) {}
 }
 
-//关于
-void ImageProcesser::about1(){
-    QMessageBox:: about(this, tr("作者"),tr("<p>作者：郝正亮</p>"
-                                          "<p>学号：1120172919</p>"
-                                          ));
+//调整显示大小
+void ImageProcesser::scaleImage(double factor){
+    //调整显示大小
+    Q_ASSERT(imageLabel->pixmap());
+    scaleFactor *= factor;
+    imageLabel->resize(scaleFactor * imageLabel->pixmap()->size());
+    //调整滚动框
+    QScrollBar *scrollBar = scrollArea->horizontalScrollBar();
+    scrollBar->setValue(int(factor * scrollBar->value() + ((factor - 1) * scrollBar->pageStep()/2)));;
+    scrollBar = scrollArea->verticalScrollBar();
+    scrollBar->setValue(int(factor * scrollBar->value() + ((factor - 1) * scrollBar->pageStep()/2)));;
+    //最多放大或缩小5倍
+    zoomInAct->setEnabled(scaleFactor < 5.0);
+    zoomOutAct->setEnabled(scaleFactor > 0.2);
 }
-void ImageProcesser::about2(){
-    QMessageBox:: about(this, tr("项目介绍"),tr("\
-                                            <p>编程实现不同采样率和不同量化等级图像的显示效果。要求：</p>\
-                                            <ul>\
-                                            <li><del>只能使用C、C++、Java或Delphi等编程语言</del></li>\
-                                            <li><del>要求提供图形化显示界面</del></li>\
-                                            <li><del>要求有图像载入、保存和相关处理选项功能</del></li>\
-                                            <li><del>可以只考虑灰度图像</del></li>\
-                                            <li><del>编写代码，把8位灰度图转化为8幅位平面表示的二值图。</del></li>\
-                                            <li><del>在前两章的作业基础之上，添加直方图显示功能，并在直方图下方显示相关信息，如平均灰度、中值灰度、标准差和像素总数等</del></li>\
-                                            <li><del>同时，提供灵活交互方式确定阈值灰度，对输入图像进行阈值化产生一幅二值图像，要实时显示。（自己提供验证图像）</del></li>\
-                                            <li><del>在已有的程序框架上完成点运算，要求支持不少于两种线性和非线性的变换，要能显示变换前后的图像灰度直方图。</del></li>\
-                                            <li><del>对第二章之后的作业处理结果都支持直方图显示功能</del></li>\
-                                            <li>编写程序实现灰度直方图均衡算法，并参考相关文献，对传统的直方图均衡方法进行优化，给出优化前后的直方图比较。</li>\
-                                            </ul>"
-                                            "<p>项目源码：https://github.com/DeltaHao/ImageProcesser</p>"));
+void ImageProcesser::zoomIn(){
+    scaleImage(1.2);
 }
-
+void ImageProcesser::zoomOut(){
+    scaleImage(0.8);
+}
+void ImageProcesser::normalSize(){
+    imageLabel->adjustSize();
+    scaleFactor = 1.0;
+}
 //转化为灰度图像
 void ImageProcesser::toGray(){
     int width = image.width();
@@ -236,4 +241,29 @@ void ImageProcesser::changeToBitplane8(){
     for(int i=0; i<8; i++){
         if(i!=index) changeToBitplaneAct[i]->setChecked(false);
     }
+}
+
+
+//关于
+void ImageProcesser::about1(){
+    QMessageBox:: about(this, tr("作者"),tr("<p>作者：郝正亮</p>"
+                                          "<p>学号：1120172919</p>"
+                                          ));
+}
+void ImageProcesser::about2(){
+    QMessageBox:: about(this, tr("项目介绍"),tr("\
+                                            <p>编程实现不同采样率和不同量化等级图像的显示效果。要求：</p>\
+                                            <ul>\
+                                            <li><del>只能使用C、C++、Java或Delphi等编程语言</del></li>\
+                                            <li><del>要求提供图形化显示界面</del></li>\
+                                            <li><del>要求有图像载入、保存和相关处理选项功能</del></li>\
+                                            <li><del>可以只考虑灰度图像</del></li>\
+                                            <li><del>编写代码，把8位灰度图转化为8幅位平面表示的二值图。</del></li>\
+                                            <li><del>在前两章的作业基础之上，添加直方图显示功能，并在直方图下方显示相关信息，如平均灰度、中值灰度、标准差和像素总数等</del></li>\
+                                            <li><del>同时，提供灵活交互方式确定阈值灰度，对输入图像进行阈值化产生一幅二值图像，要实时显示。（自己提供验证图像）</del></li>\
+                                            <li><del>在已有的程序框架上完成点运算，要求支持不少于两种线性和非线性的变换，要能显示变换前后的图像灰度直方图。</del></li>\
+                                            <li><del>对第二章之后的作业处理结果都支持直方图显示功能</del></li>\
+                                            <li>编写程序实现灰度直方图均衡算法，并参考相关文献，对传统的直方图均衡方法进行优化，给出优化前后的直方图比较。</li>\
+                                            </ul>"
+                                            "<p>项目源码：https://github.com/DeltaHao/ImageProcesser</p>"));
 }

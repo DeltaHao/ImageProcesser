@@ -4,6 +4,7 @@
 
 //构造函数
 ImageProcesser::ImageProcesser():
+    scaleFactor(1),
     widget(new QWidget),
     imageLabel(new QLabel),
     scrollArea(new QScrollArea),
@@ -128,6 +129,18 @@ void ImageProcesser::createActions(){
         changeToBitplaneAct[i]->setEnabled(false);
         changeToBitplaneAct[i]->setCheckable(true);
     }
+
+    //菜单栏-显示
+    QMenu *viewMenu = menuBar()->addMenu(tr("&显示"));
+    zoomInAct = viewMenu->addAction(tr("&放大(20%)"), this, &ImageProcesser::zoomIn);
+    zoomInAct->setShortcut(QKeySequence::ZoomIn);
+    zoomInAct->setEnabled(false);
+    zoomOutAct = viewMenu->addAction(tr("&缩小(20%)"), this, &ImageProcesser::zoomOut);
+    zoomOutAct->setShortcut(QKeySequence::ZoomOut);
+    zoomOutAct->setEnabled(false);
+    viewMenu->addSeparator();
+    normalSizeAct = viewMenu->addAction(tr("原始大小"), this, &ImageProcesser::normalSize);
+    normalSizeAct->setEnabled(false);
 
     //菜单栏-关于
     QMenu *aboutMenu = menuBar()->addMenu(tr("&关于"));

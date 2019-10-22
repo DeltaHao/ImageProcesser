@@ -33,6 +33,9 @@ private slots://私有槽函数
     void changeToBitplane6();
     void changeToBitplane7();
     void changeToBitplane8();
+    void zoomIn();//放大显示
+    void zoomOut();//缩小显示
+    void normalSize();//原始大小
     void showSpinBox1();//显示阈值灰度调节框
     void showBinaryImage(int threshold);//根据阈值灰度生成二值图
     void showSpinBox2();//显示线性变换调节框
@@ -54,9 +57,10 @@ private:
     void toBitplane();
     void showHistogram(QImage);//显示灰度直方图
     void showGrayInfo(QImage);//展示灰度的信息
-
+    void scaleImage(double factor);
     //实体成员
     QImage image;//原图像
+    double scaleFactor;//图像的显示比例
     QImage grayimage;//灰度图像
     double grayInfo[4];//灰度图像的四个相关信息：平均灰度、中值灰度、标准差和像素总数
     QImage bitplaneimage[8];//8幅位平面二值图
@@ -83,6 +87,9 @@ private:
     QAction *saveAsAct;
     QAction *changeToGrayAct;
     QAction *changeToBitplaneAct[8];
+    QAction *zoomInAct;
+    QAction *zoomOutAct;
+    QAction *normalSizeAct;
 };
 
 #endif // IMAGEPROCESSER_H
