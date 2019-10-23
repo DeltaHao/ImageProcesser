@@ -51,7 +51,6 @@ bool ImageProcesser::loadFile(const QString &fileName){
     return true;
 }
 void ImageProcesser::setImage(){
-    radioButton0->setChecked(true);
     hideSpinBoxes();
     //将图像显示在imageLabel上
     showingImage = image;
@@ -132,6 +131,7 @@ void ImageProcesser::normalSize(){
     imageLabel->adjustSize();
     scaleFactor = 1.0;
 }
+
 //转化为灰度图像
 void ImageProcesser::toGray(){
     int width = image.width();
@@ -157,18 +157,17 @@ void ImageProcesser::toGray(){
     }
     grayimage = tmp;
 }
-void ImageProcesser::changeToGray(){
-    bool isChecked = changeToGrayAct->isChecked();
-    if(!isChecked){//若未被选择
-        showingImage = image;
-        imageLabel->setPixmap(QPixmap::fromImage(showingImage));//显示原图
-        imageLabel->adjustSize();
-    }
-    else{//若被选择
-        showingImage = grayimage;
-        imageLabel->adjustSize();//显示灰度图
-        imageLabel->adjustSize();
-    }
+
+//显示原图
+void ImageProcesser::showOriginal(){
+    hideSpinBoxes();
+
+    showingImage = image;
+    imageLabel->setPixmap(QPixmap::fromImage(showingImage));//显示原图
+    imageLabel->adjustSize();
+
+    showHistogram(grayimage);
+    showGrayInfo(grayimage, grayInfo);
 }
 
 //将8位灰度图像转换为8幅位平面二值图
@@ -267,7 +266,6 @@ void ImageProcesser::changeToBitplane8(){
     }
     showHistogram(showingImage);
 }
-
 
 //关于
 void ImageProcesser::about1(){

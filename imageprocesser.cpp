@@ -10,7 +10,7 @@ ImageProcesser::ImageProcesser():
     scrollArea(new QScrollArea),
     chartview(new QChartView),
     GrayInfo(new QLabel),
-    radioButton0(new QRadioButton("显示原图")),
+    radioButton0(new QRadioButton("显示灰度图")),
     spinbox1(new QSpinBox),
     radioButton1(new QRadioButton("根据阈值灰度生成二值图：")),
     spinbox2_1(new QDoubleSpinBox),
@@ -43,10 +43,9 @@ ImageProcesser::ImageProcesser():
     //直方图    
     chartview->setVisible(false);
     GrayInfo->setVisible(false);
-    //“显示原图”按钮
-    radioButton0->setChecked(true);
+    //“显示灰度图”按钮
     radioButton0->setVisible(false);
-    connect(radioButton0, SIGNAL(clicked()), this, SLOT(showCommenImage()));
+    connect(radioButton0, SIGNAL(clicked()), this, SLOT(showGrayImage()));
     //“均衡处理”按钮
     radioButton4->setVisible(false);
     connect(radioButton4, SIGNAL(clicked()), this, SLOT(showBalanceImage()));
@@ -92,6 +91,7 @@ ImageProcesser::ImageProcesser():
     connect(spinbox8_2, SIGNAL(valueChanged(double)), this, SLOT(bilinearInterpolation(double)));
     //设置布局
     QGridLayout *mainLayout = new QGridLayout;
+    //第一列
     mainLayout->addWidget(scrollArea, 0, 0, 2, 3);
     mainLayout->addWidget(radioButton0, 2, 0, 1, 1);
     mainLayout->addWidget(radioButton4, 2, 1, 1, 1);
@@ -104,17 +104,17 @@ ImageProcesser::ImageProcesser():
     mainLayout->addWidget(radioButton3, 5, 0, 1, 1);
     mainLayout->addWidget(spinbox3_1, 5, 1, 1, 1);
     mainLayout->addWidget(spinbox3_2, 5, 2, 1, 1);
-
+    //第二列
     mainLayout->addWidget(chartview, 0, 3, 2, 3);
     mainLayout->addWidget(GrayInfo, 1, 3, 1, 3);
-    mainLayout->addWidget(radioButton6, 2, 3, 1, 1);
-    mainLayout->addWidget(spinbox6_1, 2, 4, 1, 1);
-    mainLayout->addWidget(spinbox6_2, 2, 5, 1, 1);
-    mainLayout->addWidget(radioButton7, 3, 3, 1, 1);
-    mainLayout->addWidget(spinbox7, 3, 5, 1, 1);
-    mainLayout->addWidget(radioButton8, 4, 3, 1, 1);
-    mainLayout->addWidget(spinbox8_1, 4, 4, 1, 1);
-    mainLayout->addWidget(spinbox8_2, 4, 5, 1, 1);
+    mainLayout->addWidget(radioButton6, 3, 3, 1, 1);
+    mainLayout->addWidget(spinbox6_1, 3, 4, 1, 1);
+    mainLayout->addWidget(spinbox6_2, 3, 5, 1, 1);
+    mainLayout->addWidget(radioButton7, 4, 3, 1, 1);
+    mainLayout->addWidget(spinbox7, 4, 5, 1, 1);
+    mainLayout->addWidget(radioButton8, 5, 3, 1, 1);
+    mainLayout->addWidget(spinbox8_1, 5, 4, 1, 1);
+    mainLayout->addWidget(spinbox8_2, 5, 5, 1, 1);
     //行列比例
     mainLayout->setColumnStretch(0, 1);
     mainLayout->setColumnStretch(1, 1);
@@ -151,10 +151,9 @@ void ImageProcesser::createActions(){
 
     //菜单栏-处理
     QMenu *processMenu = menuBar()->addMenu(tr("&处理"));
-    //转为灰度图
-    changeToGrayAct = processMenu->addAction(tr("&灰度图/RGB图"), this, &ImageProcesser::changeToGray);
+    //显示原图
+    changeToGrayAct = processMenu->addAction(tr("&显示原图"), this, &ImageProcesser::showOriginal);
     changeToGrayAct->setEnabled(false);
-    changeToGrayAct->setCheckable(true);
     //分隔符
     processMenu->addSeparator();
     //转为位平面图

@@ -23,7 +23,7 @@ private slots://私有槽函数
     void saveAs();//另存为
     void about1();//显示“关于作者”信息
     void about2();//显示“关于软件”信息
-    void changeToGray();//转换为灰度图片
+    void showOriginal();//显示原图
     //将8位灰度图像转换为8幅位平面二值图
     void changeToBitplane1();
     void changeToBitplane2();
@@ -37,7 +37,7 @@ private slots://私有槽函数
     void zoomOut();//缩小显示
     void normalSize();//原始大小
 
-    void showCommenImage();//显示原图
+    void showGrayImage();//显示灰度图原图
     void showBalanceImage();//显示均衡处理后的图片
     void showNewBalanceImage();//显示优化后的均衡处理
     void showSpinBox1();//显示阈值灰度调节框

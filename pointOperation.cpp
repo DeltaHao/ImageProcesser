@@ -17,8 +17,8 @@ void ImageProcesser::hideSpinBoxes(){
     spinbox8_2->setVisible(false);
 }
 
-//显示原图
-void ImageProcesser::showCommenImage(){
+//显示灰度图原图
+void ImageProcesser::showGrayImage(){
     changeToGrayAct->setChecked(true);
 
     hideSpinBoxes();
@@ -146,6 +146,7 @@ void ImageProcesser::showSpinBox1(){
 
     spinbox1->setRange(0, 255);
     spinbox1->setSingleStep(16);
+    spinbox1->setValue(128);
     spinbox1->setVisible(true);
 
     showBinaryImage(spinbox1->value());

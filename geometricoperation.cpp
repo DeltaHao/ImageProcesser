@@ -17,6 +17,7 @@ void ImageProcesser::showSpinBox6(){
     spinbox6_2->setRange(-1000, +1000);
     spinbox6_2->setValue(0);
     spinbox6_2->setVisible(true);
+    showTranslation2(0);
 }
 void ImageProcesser::showTranslation1(int len){
     spinbox6_2->setValue(0);
@@ -118,6 +119,8 @@ void ImageProcesser::showSpinBox7(){
     spinbox7->setRange(-90, +90);
     spinbox7->setValue(0);
     spinbox7->setVisible(true);
+
+    showRotation(0);
 }
 void ImageProcesser::showRotation(double angle){
     double R = PI*angle/180.0;//弧度
@@ -187,11 +190,90 @@ void ImageProcesser::showSpinBox8(){
     spinbox8_2->setRange(-1000, +1000);
     spinbox8_2->setValue(1);
     spinbox8_2->setVisible(true);
+
+    nearstInterpolation(1);
 }
 void ImageProcesser::nearstInterpolation(double factor){
+    spinbox8_2->setValue(1);
 
-    //todo
+    int w = (int)(image.width() * factor + 0.5);
+    int h = (int)(image.height() * factor + 0.5);
+    QImage tmp(w, h, QImage::Format_Indexed8);
+    tmp.setColorCount(256);
+    for(int i=0;i<256;i++)
+        tmp.setColor(i,qRgb(i,i,i));
+    for(int i=0; i<w; i++){
+        for(int j=0; j<h; j++){
+            int old_i = (int)(i / factor + 0.5);
+            int old_j = (int)(j / factor + 0.5);
+            if(old_i<0 || old_i >= image.width() || old_j<0 || old_j >= image.height())
+                tmp.setPixel(i, j, 255);
+            else{
+                int index = grayimage.pixelIndex(old_i, old_j);
+                tmp.setPixel(i, j, index);
+            }
+        }
+    }
+
+    showingImage = tmp;
+    imageLabel->setPixmap(QPixmap::fromImage(showingImage));
+    imageLabel->adjustSize();//imageLabel的大小可调整
+
+    showHistogram(showingImage);
+    showGrayInfo(showingImage, showingGrayInfo);
 }
 void ImageProcesser::bilinearInterpolation(double factor){
-    //todo
+    spinbox8_1->setValue(1);
+
+    int w = (int)(image.width() * factor + 0.5);
+    int h = (int)(image.height() * factor + 0.5);
+    QImage tmp(w, h, QImage::Format_Indexed8);
+    tmp.setColorCount(256);
+    for(int i=0;i<256;i++)
+        tmp.setColor(i,qRgb(i,i,i));
+    if(factor <= 1.0){//缩小
+        for(int i=0; i<w; i++){
+            for(int j=0; j<h; j++){
+                int old_i = (int)(i / factor + 0.5);
+                int old_j = (int)(j / factor + 0.5);
+                if(old_i<0 || old_i >= image.width() || old_j<0 || old_j >= image.height())
+                    tmp.setPixel(i, j, 255);
+                else{
+                    int index = grayimage.pixelIndex(old_i, old_j);
+                    tmp.setPixel(i, j, index);
+                }
+            }
+        }
+    }
+    else{//放大
+        //todo 双线性插值法放大图像    https://blog.csdn.net/u011776903/article/details/78782499
+
+        int x1, x2, y1, y2;
+        double temp1, temp2;
+        for(int i=0; i<w; i++){
+            for(int j=0; j<h; j++){
+                x1 = (int) (i/factor);
+                x2 = x1 + 1;
+                y1 = (int) (j/factor);
+                y2 = y1 + 1;
+
+                //判断边界
+                if(y2 >= image.height() || x2 >= image.width()){
+                    tmp.setPixel(i, j, (grayimage.pixelIndex(x1, y1)));
+                    continue;
+                }
+
+                temp1 = (x2 - i / factor) * grayimage.pixelIndex(x1, y1) + (i / factor - x1) * grayimage.pixelIndex(x2, y1);
+                temp2 = (x2 - i / factor) * grayimage.pixelIndex(x1, y2) + (i / factor - x1) * grayimage.pixelIndex(x2, y2);
+                tmp.setPixel(i, j, (uchar)((y2 - j / factor) * temp1 + (j / factor - y1) * temp2));
+            }
+        }
+    }
+
+    showingImage = tmp;
+    imageLabel->setPixmap(QPixmap::fromImage(showingImage));
+    imageLabel->adjustSize();//imageLabel的大小可调整
+
+    showHistogram(showingImage);
+    showGrayInfo(showingImage, showingGrayInfo);
 }
