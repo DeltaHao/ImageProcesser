@@ -56,12 +56,7 @@ void ImageProcesser::showTranslation1(int len){
 
     }
 
-    showingImage = tmp;
-    imageLabel->setPixmap(QPixmap::fromImage(showingImage));
-    imageLabel->adjustSize();//imageLabel的大小可调整
-
-    showHistogram(showingImage);
-    showGrayInfo(showingImage, showingGrayInfo);
+    showImage(tmp);
 }
 void ImageProcesser::showTranslation2(int len){
     spinbox6_1->setValue(0);
@@ -101,12 +96,7 @@ void ImageProcesser::showTranslation2(int len){
 
     }
 
-    showingImage = tmp;
-    imageLabel->setPixmap(QPixmap::fromImage(showingImage));
-    imageLabel->adjustSize();//imageLabel的大小可调整
-
-    showHistogram(showingImage);
-    showGrayInfo(showingImage, showingGrayInfo);
+    showImage(tmp);
 }
 
 //旋转
@@ -165,12 +155,7 @@ void ImageProcesser::showRotation(double angle){
             }
         }
     }
-    showingImage = tmp;
-    imageLabel->setPixmap(QPixmap::fromImage(showingImage));
-    imageLabel->adjustSize();//imageLabel的大小可调整
-
-    showHistogram(showingImage);
-    showGrayInfo(showingImage, showingGrayInfo);
+    showImage(tmp);
 }
 
 //缩放
@@ -215,12 +200,7 @@ void ImageProcesser::nearstInterpolation(double factor){
         }
     }
 
-    showingImage = tmp;
-    imageLabel->setPixmap(QPixmap::fromImage(showingImage));
-    imageLabel->adjustSize();//imageLabel的大小可调整
-
-    showHistogram(showingImage);
-    showGrayInfo(showingImage, showingGrayInfo);
+    showImage(tmp);
 }
 void ImageProcesser::bilinearInterpolation(double factor){
     spinbox8_1->setValue(1);
@@ -270,10 +250,5 @@ void ImageProcesser::bilinearInterpolation(double factor){
         }
     }
 
-    showingImage = tmp;
-    imageLabel->setPixmap(QPixmap::fromImage(showingImage));
-    imageLabel->adjustSize();//imageLabel的大小可调整
-
-    showHistogram(showingImage);
-    showGrayInfo(showingImage, showingGrayInfo);
+    showImage(tmp);
 }

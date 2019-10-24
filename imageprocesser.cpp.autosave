@@ -202,7 +202,6 @@ void ImageProcesser::hideSpinBoxes(){
     spinbox8_1->setVisible(false);
     spinbox8_2->setVisible(false);
 }
-
 //更新画面
 void ImageProcesser::showImage(QImage img){
     showingImage = img;

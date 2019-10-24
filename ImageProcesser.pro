@@ -29,9 +29,9 @@ SOURCES += \
         main.cpp \
         imageprocesser.cpp \
     histogram.cpp \
-    actions.cpp \
     pointOperation.cpp \
-    geometricoperation.cpp
+    geometricOperation.cpp \
+    menuActions.cpp
 
 HEADERS += \
         imageprocesser.h

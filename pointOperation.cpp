@@ -3,34 +3,12 @@
 #include"imageprocesser.h"
 
 #define PI 3.1415926
-//隐藏其它输入框
-void ImageProcesser::hideSpinBoxes(){
-    spinbox1->setVisible(false);
-    spinbox2_1->setVisible(false);
-    spinbox2_2->setVisible(false);
-    spinbox3_1->setVisible(false);
-    spinbox3_2->setVisible(false);
-    spinbox6_1->setVisible(false);
-    spinbox6_2->setVisible(false);
-    spinbox7->setVisible(false);
-    spinbox8_1->setVisible(false);
-    spinbox8_2->setVisible(false);
-}
 
 //显示灰度图原图
 void ImageProcesser::showGrayImage(){
-    changeToGrayAct->setChecked(true);
-
     hideSpinBoxes();
-
-    showingImage = grayimage;
-    imageLabel->setPixmap(QPixmap::fromImage(showingImage));//显示灰度图
-    imageLabel->adjustSize();
-    //显示灰度直方图
-    showHistogram(grayimage);
-    showGrayInfo(grayimage, grayInfo);
+    showImage(grayimage);
 }
-
 //显示均衡处理后的图片
 void ImageProcesser::showBalanceImage(){
     hideSpinBoxes();
@@ -69,12 +47,7 @@ void ImageProcesser::showBalanceImage(){
         }
     }
 
-    showingImage = tmp;
-    imageLabel->setPixmap(QPixmap::fromImage(showingImage));
-    imageLabel->adjustSize();
-
-    showHistogram(showingImage);
-    showGrayInfo(showingImage, showingGrayInfo);
+    showImage(tmp);
 }
 
 //显示优化后的均衡处理图片（BBHE方法）
@@ -132,12 +105,7 @@ void ImageProcesser::showNewBalanceImage(){
         }
     }
 
-    showingImage = tmp;
-    imageLabel->setPixmap(QPixmap::fromImage(showingImage));
-    imageLabel->adjustSize();
-
-    showHistogram(showingImage);
-    showGrayInfo(showingImage, showingGrayInfo);
+    showImage(tmp);
 }
 
 //根据阈值灰度生成二值图
@@ -164,12 +132,8 @@ void ImageProcesser::showBinaryImage(int threshold){
                 tmp.setPixel(i, j ,1);
         }
     }
-    showingImage = tmp;
-    imageLabel->setPixmap(QPixmap::fromImage(showingImage));
-    imageLabel->adjustSize();
-
-    showHistogram(showingImage);
-    GrayInfo->setVisible(false);
+    showImage(tmp);
+    GrayInfo->setVisible(false);//隐藏灰度信息（因为二值图计算出来是错的）
 }
 
 //线性变换
@@ -206,12 +170,7 @@ void ImageProcesser::showlinearImage1(double a){
            tmp.setPixel(i, j, newPix);
         }
     }
-    showingImage = tmp;
-    imageLabel->setPixmap(QPixmap::fromImage(showingImage));
-    imageLabel->adjustSize();
-
-    showHistogram(showingImage);
-    showGrayInfo(showingImage, showingGrayInfo);
+    showImage(tmp);
 }
 void ImageProcesser::showlinearImage2(int b){
     spinbox2_1->setValue(1);
@@ -231,12 +190,7 @@ void ImageProcesser::showlinearImage2(int b){
            tmp.setPixel(i, j ,newPix);
         }
     }
-    showingImage = tmp;
-    imageLabel->setPixmap(QPixmap::fromImage(showingImage));
-    imageLabel->adjustSize();
-
-    showHistogram(showingImage);
-    showGrayInfo(showingImage, showingGrayInfo);
+    showImage(tmp);
 }
 
 //非线性变换
@@ -275,12 +229,7 @@ void ImageProcesser::showUnlinearImage1(double a){
             tmp.setPixel(i, j, newPix);
         }
     }
-    showingImage = tmp;
-    imageLabel->setPixmap(QPixmap::fromImage(showingImage));
-    imageLabel->adjustSize();
-
-    showHistogram(showingImage);
-    showGrayInfo(showingImage, showingGrayInfo);
+    showImage(tmp);
 }
 void ImageProcesser::showUnlinearImage2(double b){
     spinbox3_1->setValue(0.5);
@@ -301,10 +250,5 @@ void ImageProcesser::showUnlinearImage2(double b){
             tmp.setPixel(i, j ,newPix);
         }
     }
-    showingImage = tmp;
-    imageLabel->setPixmap(QPixmap::fromImage(showingImage));
-    imageLabel->adjustSize();
-
-    showHistogram(showingImage);
-    showGrayInfo(showingImage, showingGrayInfo);
+    showImage(tmp);
 }

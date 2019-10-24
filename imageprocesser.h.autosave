@@ -116,6 +116,7 @@ private://私有函数
     QDoubleSpinBox *spinbox8_1;
     QDoubleSpinBox *spinbox8_2;
     QRadioButton *radioButton8;
+    
     //菜单命令
     QAction *saveAsAct;
     QAction *changeToGrayAct;
