@@ -58,6 +58,10 @@ private slots://私有槽函数
     void showSpinBox8();//显示缩放调节框
     void nearstInterpolation(double);//最近邻插值法缩放
     void bilinearInterpolation(double);//双线性插值法缩放
+//---enhancement.cpp---
+    void meanFilter();//均值滤波 - 平滑
+    void medianFilter();//中值滤波 - 平滑
+    void gaussFilter();//高斯滤波 - 平滑
 
 private://私有函数
 //---imageprocesser.cpp---
@@ -116,6 +120,10 @@ private://私有函数
     QDoubleSpinBox *spinbox8_1;
     QDoubleSpinBox *spinbox8_2;
     QRadioButton *radioButton8;
+    //平滑
+    QRadioButton *radioButton9;
+    QRadioButton *radioButton10;
+    QRadioButton *radioButton11;
     //菜单命令
     QAction *saveAsAct;
     QAction *changeToGrayAct;

@@ -28,7 +28,10 @@ ImageProcesser::ImageProcesser():
     radioButton7(new QRadioButton("图像旋转：")),
     spinbox8_1(new QDoubleSpinBox),
     spinbox8_2(new QDoubleSpinBox),
-    radioButton8(new QRadioButton("图像缩放："))
+    radioButton8(new QRadioButton("图像缩放：")),
+    radioButton9(new QRadioButton("均值平滑")),
+    radioButton10(new QRadioButton("中值平滑")),
+    radioButton11(new QRadioButton("高斯平滑"))
 {
 //初始化控件
     setCentralWidget(widget);//设置窗口中心部件
@@ -90,6 +93,13 @@ ImageProcesser::ImageProcesser():
     connect(radioButton8, SIGNAL(clicked()), this, SLOT(showSpinBox8()));
     connect(spinbox8_1, SIGNAL(valueChanged(double)), this, SLOT(nearstInterpolation(double)));
     connect(spinbox8_2, SIGNAL(valueChanged(double)), this, SLOT(bilinearInterpolation(double)));
+    //平滑
+    radioButton9->setVisible(false);
+    connect(radioButton9, SIGNAL(clicked()), this, SLOT(meanFilter()));
+    radioButton10->setVisible(false);
+    connect(radioButton10, SIGNAL(clicked()), this, SLOT(medianFilter()));
+    radioButton11->setVisible(false);
+    connect(radioButton11, SIGNAL(clicked()), this, SLOT(gaussFilter()));
 //设置布局
     QGridLayout *mainLayout = new QGridLayout;
     //左侧
@@ -105,9 +115,13 @@ ImageProcesser::ImageProcesser():
     mainLayout->addWidget(radioButton3, 5, 0, 1, 1);
     mainLayout->addWidget(spinbox3_1, 5, 1, 1, 1);
     mainLayout->addWidget(spinbox3_2, 5, 2, 1, 1);
+
     //右侧
     mainLayout->addWidget(chartview, 0, 3, 2, 3);
     mainLayout->addWidget(GrayInfo, 1, 3, 1, 3);
+    mainLayout->addWidget(radioButton9, 2, 3, 1, 1);
+    mainLayout->addWidget(radioButton10, 2, 4, 1, 1);
+    mainLayout->addWidget(radioButton11, 2, 5, 1, 1);
     mainLayout->addWidget(radioButton6, 3, 3, 1, 1);
     mainLayout->addWidget(spinbox6_1, 3, 4, 1, 1);
     mainLayout->addWidget(spinbox6_2, 3, 5, 1, 1);
@@ -189,6 +203,15 @@ void ImageProcesser::createActions(){
     QAction *about2Act = aboutMenu->addAction(tr("&项目介绍..."), this, &ImageProcesser::about2);
 }
 
+//更新画面
+void ImageProcesser::showImage(QImage img){
+    showingImage = img;
+    imageLabel->setPixmap(QPixmap::fromImage(img));
+    imageLabel->adjustSize();//imageLabel的大小可调整
+
+    showHistogram(img);//显示直方图
+}
+
 //隐藏其它输入框
 void ImageProcesser::hideSpinBoxes(){
     spinbox1->setVisible(false);
@@ -201,13 +224,4 @@ void ImageProcesser::hideSpinBoxes(){
     spinbox7->setVisible(false);
     spinbox8_1->setVisible(false);
     spinbox8_2->setVisible(false);
-}
-
-//更新画面
-void ImageProcesser::showImage(QImage img){
-    showingImage = img;
-    imageLabel->setPixmap(QPixmap::fromImage(img));
-    imageLabel->adjustSize();//imageLabel的大小可调整
-
-    showHistogram(img);//显示直方图
 }

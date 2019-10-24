@@ -21,7 +21,6 @@ static void initializeImageFileDialog(QFileDialog &dialog){
     dialog.setNameFilters(filters);
 }
 
-
 //-----文件栏-----------------------------------------
 //打开图片
 void ImageProcesser::open(){
@@ -122,7 +121,9 @@ void ImageProcesser::setImage(){
     radioButton6->setVisible(true);
     radioButton7->setVisible(true);
     radioButton8->setVisible(true);
-
+    radioButton9->setVisible(true);
+    radioButton10->setVisible(true);
+    radioButton11->setVisible(true);
 }
 //保存图片
 bool ImageProcesser::saveFile(const QString &fileName)
@@ -146,7 +147,6 @@ void ImageProcesser::saveAs()
 
     while (dialog.exec() == QDialog::Accepted && !saveFile(dialog.selectedFiles().first())) {}
 }
-
 
 //------处理栏--------------------------------------
 //显示原图
@@ -233,7 +233,6 @@ void ImageProcesser::changeToBitplane8(){
     }
 }
 
-
 //------显示栏--------------------------------------
 //调整显示大小
 void ImageProcesser::scaleImage(double factor){
@@ -260,7 +259,6 @@ void ImageProcesser::normalSize(){
     imageLabel->adjustSize();
     scaleFactor = 1.0;
 }
-
 
 //------关于栏--------------------------------------
 //关于

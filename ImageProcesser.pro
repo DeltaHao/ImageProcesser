@@ -31,7 +31,8 @@ SOURCES += \
     histogram.cpp \
     pointOperation.cpp \
     geometricOperation.cpp \
-    menuActions.cpp
+    menuActions.cpp \
+    enhancement.cpp
 
 HEADERS += \
         imageprocesser.h
