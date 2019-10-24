@@ -71,6 +71,7 @@ private://私有函数
     void createActions();//创造命令
     void showImage(QImage);//更新画面
     void hideSpinBoxes();//隐藏所有调节框
+    QLabel *createFrame();
 //---menuAction.cpp---
     bool loadFile(const QString &);
     bool saveFile(const QString &filename);
@@ -131,6 +132,8 @@ private://私有函数
     QRadioButton *radioButton12;
     QRadioButton *radioButton13;
     QRadioButton *radioButton14;
+
+
     //菜单命令
     QAction *saveAsAct;
     QAction *changeToGrayAct;

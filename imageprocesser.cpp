@@ -39,102 +39,99 @@ ImageProcesser::ImageProcesser():
 //初始化控件
     setCentralWidget(widget);//设置窗口中心部件
     //图片Label
+    imageLabel->setVisible(false);
     imageLabel->setBackgroundRole(QPalette::Base);//设置背景颜色
     imageLabel->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);//设置大小可调整
     imageLabel->setScaledContents(true);//设置窗口自适应
+
     //滚动框
     scrollArea->setBackgroundRole(QPalette::Dark);
     scrollArea->setWidget(imageLabel);//将scrollArea中的内容设置为imageLabel
-    scrollArea->setAlignment(Qt::AlignCenter);
-    scrollArea->setVisible(false);//初始不可见
-    //直方图    
-    chartview->setVisible(false);
-    GrayInfo->setVisible(false);
+    scrollArea->setAlignment(Qt::AlignCenter); 
+
+    //灰度直方图
+    showHistogram(image);
+
     //“显示灰度图”按钮
-    radioButton0->setVisible(false);
     connect(radioButton0, SIGNAL(clicked()), this, SLOT(showGrayImage()));
-    //“均衡处理”按钮
-    radioButton4->setVisible(false);
+    //“均衡处理”按钮    
     connect(radioButton4, SIGNAL(clicked()), this, SLOT(showBalanceImage()));
-    radioButton5->setVisible(false);
     connect(radioButton5, SIGNAL(clicked()), this, SLOT(showNewBalanceImage()));
     //根据阈值灰度生成二值图
-    radioButton1->setVisible(false);
     spinbox1->setVisible(false);
     connect(radioButton1, SIGNAL(clicked()), this, SLOT(showSpinBox1()));
     connect(spinbox1, SIGNAL(valueChanged(int)), this, SLOT(showBinaryImage(int)));
     //线性变换
-    radioButton2->setVisible(false);
     spinbox2_1->setVisible(false);
     spinbox2_2->setVisible(false);
     connect(radioButton2, SIGNAL(clicked()), this, SLOT(showSpinBox2()));
     connect(spinbox2_1, SIGNAL(valueChanged(double)), this, SLOT(showlinearImage1(double)));
     connect(spinbox2_2, SIGNAL(valueChanged(int)), this, SLOT(showlinearImage2(int)));
     //非线性变换
-    radioButton3->setVisible(false);
     spinbox3_1->setVisible(false);
     spinbox3_2->setVisible(false);
     connect(radioButton3, SIGNAL(clicked()), this, SLOT(showSpinBox3()));
     connect(spinbox3_1, SIGNAL(valueChanged(double)), this, SLOT(showUnlinearImage1(double)));
     connect(spinbox3_2, SIGNAL(valueChanged(double)), this, SLOT(showUnlinearImage2(double)));
     //平移
-    radioButton6->setVisible(false);
     spinbox6_1->setVisible(false);
     spinbox6_2->setVisible(false);
     connect(radioButton6, SIGNAL(clicked()), this, SLOT(showSpinBox6()));
     connect(spinbox6_1, SIGNAL(valueChanged(int)), this, SLOT(showTranslation1(int)));
     connect(spinbox6_2, SIGNAL(valueChanged(int)), this, SLOT(showTranslation2(int)));
     //旋转
-    radioButton7->setVisible(false);
     spinbox7->setVisible(false);
     connect(radioButton7, SIGNAL(clicked()), this, SLOT(showSpinBox7()));
     connect(spinbox7, SIGNAL(valueChanged(double)), this, SLOT(showRotation(double)));
     //缩放
-    radioButton8->setVisible(false);
     spinbox8_1->setVisible(false);
     spinbox8_2->setVisible(false);
     connect(radioButton8, SIGNAL(clicked()), this, SLOT(showSpinBox8()));
     connect(spinbox8_1, SIGNAL(valueChanged(double)), this, SLOT(nearstInterpolation(double)));
     connect(spinbox8_2, SIGNAL(valueChanged(double)), this, SLOT(bilinearInterpolation(double)));
     //平滑
-    radioButton9->setVisible(false);
     connect(radioButton9, SIGNAL(clicked()), this, SLOT(meanFilter()));
-    radioButton10->setVisible(false);
     connect(radioButton10, SIGNAL(clicked()), this, SLOT(medianFilter()));
-    radioButton11->setVisible(false);
     connect(radioButton11, SIGNAL(clicked()), this, SLOT(gaussFilter()));
     //锐化
-    radioButton12->setVisible(false);
     connect(radioButton12, SIGNAL(clicked()), this, SLOT(RobertsSharpen()));
-    radioButton13->setVisible(false);
     connect(radioButton13, SIGNAL(clicked()), this, SLOT(SobelSharpen()));
-    radioButton14->setVisible(false);
     connect(radioButton14, SIGNAL(clicked()), this, SLOT(LaplacianSharpen()));
+
+
 //设置布局
     QGridLayout *mainLayout = new QGridLayout;
     //左侧
     mainLayout->addWidget(scrollArea, 0, 0, 2, 3);
+
+    mainLayout->addWidget(createFrame(), 2, 0, 1, 3);
     mainLayout->addWidget(radioButton0, 2, 0, 1, 1);
-    mainLayout->addWidget(radioButton4, 2, 1, 1, 1);
-    mainLayout->addWidget(radioButton5, 2, 2, 1, 1);
-    mainLayout->addWidget(radioButton1, 3, 0, 1, 1);
-    mainLayout->addWidget(spinbox1, 3, 2, 1, 1);
-    mainLayout->addWidget(radioButton2, 4, 0, 1, 1);
-    mainLayout->addWidget(spinbox2_1, 4, 1, 1, 1);
-    mainLayout->addWidget(spinbox2_2, 4, 2, 1, 1);
-    mainLayout->addWidget(radioButton3, 5, 0, 1, 1);
-    mainLayout->addWidget(spinbox3_1, 5, 1, 1, 1);
-    mainLayout->addWidget(spinbox3_2, 5, 2, 1, 1);
+
+    mainLayout->addWidget(createFrame(), 3, 0, 4, 3);
+    mainLayout->addWidget(radioButton4, 3, 0, 1, 1);
+    mainLayout->addWidget(radioButton5, 3, 1, 1, 1);
+    mainLayout->addWidget(radioButton1, 4, 0, 1, 1);
+    mainLayout->addWidget(spinbox1, 4, 2, 1, 1);
+    mainLayout->addWidget(radioButton2, 5, 0, 1, 1);
+    mainLayout->addWidget(spinbox2_1, 5, 1, 1, 1);
+    mainLayout->addWidget(spinbox2_2, 5, 2, 1, 1);
+    mainLayout->addWidget(radioButton3, 6, 0, 1, 1);
+    mainLayout->addWidget(spinbox3_1, 6, 1, 1, 1);
+    mainLayout->addWidget(spinbox3_2, 6, 2, 1, 1);
 
     //右侧
     mainLayout->addWidget(chartview, 0, 3, 2, 3);
     mainLayout->addWidget(GrayInfo, 1, 3, 1, 3);
+
+    mainLayout->addWidget(createFrame(), 2, 3, 2, 3);
     mainLayout->addWidget(radioButton9, 2, 3, 1, 1);
     mainLayout->addWidget(radioButton10, 2, 4, 1, 1);
     mainLayout->addWidget(radioButton11, 2, 5, 1, 1);
     mainLayout->addWidget(radioButton12, 3, 3, 1, 1);
     mainLayout->addWidget(radioButton13, 3, 4, 1, 1);
     mainLayout->addWidget(radioButton14, 3, 5, 1, 1);
+
+    mainLayout->addWidget(createFrame(), 4, 3, 3, 3);
     mainLayout->addWidget(radioButton6, 4, 3, 1, 1);
     mainLayout->addWidget(spinbox6_1, 4, 4, 1, 1);
     mainLayout->addWidget(spinbox6_2, 4, 5, 1, 1);
@@ -151,9 +148,15 @@ ImageProcesser::ImageProcesser():
     mainLayout->setColumnStretch(3, 1);
     mainLayout->setColumnStretch(4, 1);
     mainLayout->setColumnStretch(5, 1);
+
     mainLayout->setRowStretch(0, 19);
     mainLayout->setRowStretch(1, 1);
     mainLayout->setRowStretch(2, 1);
+    mainLayout->setRowStretch(3, 1);
+    mainLayout->setRowStretch(4, 1);
+    mainLayout->setRowStretch(5, 1);
+    mainLayout->setRowStretch(6, 1);
+
     widget->setLayout(mainLayout);
 
     resize(QGuiApplication::primaryScreen()->availableSize() * 3 / 5);//将窗口设置为默认的3/5大小
@@ -216,6 +219,15 @@ void ImageProcesser::createActions(){
     QAction *about1Act = aboutMenu->addAction(tr("&关于作者..."), this, &ImageProcesser::about1);
     QAction *about2Act = aboutMenu->addAction(tr("&项目介绍..."), this, &ImageProcesser::about2);
 }
+
+//生成边框
+QLabel *ImageProcesser::createFrame()
+{
+    QLabel *label = new QLabel();
+    label->setFrameStyle(QFrame::Panel | QFrame::Raised);
+    return label;
+}
+
 
 //更新画面
 void ImageProcesser::showImage(QImage img){

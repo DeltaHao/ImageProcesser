@@ -104,7 +104,7 @@ void ImageProcesser::setImage(){
     showHistogram(grayimage);//构建直方图
 
     //以下控件可见或启用
-    scrollArea->setVisible(true);
+    imageLabel->setVisible(true);
     saveAsAct->setEnabled(true);
     changeToGrayAct->setEnabled(true);
     zoomInAct->setEnabled(true);
@@ -112,21 +112,7 @@ void ImageProcesser::setImage(){
     normalSizeAct->setEnabled(true);
     for(int i=0; i<8; i++)
         changeToBitplaneAct[i]->setEnabled(true);
-    radioButton0->setVisible(true);
-    radioButton1->setVisible(true);
-    radioButton2->setVisible(true);
-    radioButton3->setVisible(true);
-    radioButton4->setVisible(true);
-    radioButton5->setVisible(true);
-    radioButton6->setVisible(true);
-    radioButton7->setVisible(true);
-    radioButton8->setVisible(true);
-    radioButton9->setVisible(true);
-    radioButton10->setVisible(true);
-    radioButton11->setVisible(true);
-    radioButton12->setVisible(true);
-    radioButton13->setVisible(true);
-    radioButton14->setVisible(true);
+
 }
 //保存图片
 bool ImageProcesser::saveFile(const QString &fileName)
