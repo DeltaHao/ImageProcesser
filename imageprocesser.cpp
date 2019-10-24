@@ -38,6 +38,8 @@ ImageProcesser::ImageProcesser():
 {
 //初始化控件
     setCentralWidget(widget);//设置窗口中心部件
+    resize(1150, 730);//设置窗口大小
+
     //图片Label
     imageLabel->setVisible(false);
     imageLabel->setBackgroundRole(QPalette::Base);//设置背景颜色
@@ -101,48 +103,48 @@ ImageProcesser::ImageProcesser():
 
 //设置布局
     QGridLayout *mainLayout = new QGridLayout;
-    //左侧
-    mainLayout->addWidget(scrollArea, 0, 0, 2, 3);
-
-    mainLayout->addWidget(createFrame(), 2, 0, 1, 3);
-    mainLayout->addWidget(radioButton0, 2, 0, 1, 1);
-
-    mainLayout->addWidget(createFrame(), 3, 0, 4, 3);
-    mainLayout->addWidget(radioButton4, 3, 0, 1, 1);
-    mainLayout->addWidget(radioButton5, 3, 1, 1, 1);
-    mainLayout->addWidget(radioButton1, 4, 0, 1, 1);
-    mainLayout->addWidget(spinbox1, 4, 2, 1, 1);
-    mainLayout->addWidget(radioButton2, 5, 0, 1, 1);
-    mainLayout->addWidget(spinbox2_1, 5, 1, 1, 1);
-    mainLayout->addWidget(spinbox2_2, 5, 2, 1, 1);
-    mainLayout->addWidget(radioButton3, 6, 0, 1, 1);
-    mainLayout->addWidget(spinbox3_1, 6, 1, 1, 1);
-    mainLayout->addWidget(spinbox3_2, 6, 2, 1, 1);
-
     //右侧
-    mainLayout->addWidget(chartview, 0, 3, 2, 3);
+    mainLayout->addWidget(chartview, 0, 3, 3, 3);
     mainLayout->addWidget(GrayInfo, 1, 3, 1, 3);
+    int no = 3;
 
-    mainLayout->addWidget(createFrame(), 2, 3, 2, 3);
-    mainLayout->addWidget(radioButton9, 2, 3, 1, 1);
-    mainLayout->addWidget(radioButton10, 2, 4, 1, 1);
-    mainLayout->addWidget(radioButton11, 2, 5, 1, 1);
-    mainLayout->addWidget(radioButton12, 3, 3, 1, 1);
-    mainLayout->addWidget(radioButton13, 3, 4, 1, 1);
-    mainLayout->addWidget(radioButton14, 3, 5, 1, 1);
+    mainLayout->addWidget(radioButton0, no++, 3, 1, 1);
+    mainLayout->addWidget(createFrame(), no++, 3, 1, 3);
 
-    mainLayout->addWidget(createFrame(), 4, 3, 3, 3);
-    mainLayout->addWidget(radioButton6, 4, 3, 1, 1);
-    mainLayout->addWidget(spinbox6_1, 4, 4, 1, 1);
-    mainLayout->addWidget(spinbox6_2, 4, 5, 1, 1);
-    mainLayout->addWidget(radioButton7, 5, 3, 1, 1);
-    mainLayout->addWidget(spinbox7, 5, 5, 1, 1);
-    mainLayout->addWidget(radioButton8, 6, 3, 1, 1);
-    mainLayout->addWidget(spinbox8_1, 6, 4, 1, 1);
-    mainLayout->addWidget(spinbox8_2, 6, 5, 1, 1);
+
+    mainLayout->addWidget(radioButton4, no, 3, 1, 1);
+    mainLayout->addWidget(radioButton5, no++, 4, 1, 1);
+    mainLayout->addWidget(radioButton1, no, 3, 1, 1);
+    mainLayout->addWidget(spinbox1, no++, 5, 1, 1);
+    mainLayout->addWidget(radioButton2, no, 3, 1, 1);
+    mainLayout->addWidget(spinbox2_1, no, 4, 1, 1);
+    mainLayout->addWidget(spinbox2_2, no++, 5, 1, 1);
+    mainLayout->addWidget(radioButton3, no, 3, 1, 1);
+    mainLayout->addWidget(spinbox3_1, no, 4, 1, 1);
+    mainLayout->addWidget(spinbox3_2, no++, 5, 1, 1);
+    mainLayout->addWidget(createFrame(), no++, 3, 1, 3);
+
+    mainLayout->addWidget(radioButton6, no, 3, 1, 1);
+    mainLayout->addWidget(spinbox6_1, no, 4, 1, 1);
+    mainLayout->addWidget(spinbox6_2, no++, 5, 1, 1);
+    mainLayout->addWidget(radioButton7, no, 3, 1, 1);
+    mainLayout->addWidget(spinbox7, no++, 5, 1, 1);
+    mainLayout->addWidget(radioButton8, no, 3, 1, 1);
+    mainLayout->addWidget(spinbox8_1, no, 4, 1, 1);
+    mainLayout->addWidget(spinbox8_2, no++, 5, 1, 1);
+    mainLayout->addWidget(createFrame(), no++, 3, 1, 3);
+
+    mainLayout->addWidget(radioButton9, no, 3, 1, 1);
+    mainLayout->addWidget(radioButton10, no, 4, 1, 1);
+    mainLayout->addWidget(radioButton11, no++, 5, 1, 1);
+    mainLayout->addWidget(radioButton12, no, 3, 1, 1);
+    mainLayout->addWidget(radioButton13, no, 4, 1, 1);
+    mainLayout->addWidget(radioButton14, no, 5, 1, 1);
+
+    mainLayout->addWidget(scrollArea, 0, 0, no+1, 3);
 
     //设置行列比例
-    mainLayout->setColumnStretch(0, 1);
+    mainLayout->setColumnStretch(0, 2);
     mainLayout->setColumnStretch(1, 1);
     mainLayout->setColumnStretch(2, 1);
     mainLayout->setColumnStretch(3, 1);
@@ -155,11 +157,8 @@ ImageProcesser::ImageProcesser():
     mainLayout->setRowStretch(3, 1);
     mainLayout->setRowStretch(4, 1);
     mainLayout->setRowStretch(5, 1);
-    mainLayout->setRowStretch(6, 1);
 
     widget->setLayout(mainLayout);
-
-    resize(QGuiApplication::primaryScreen()->availableSize() * 3 / 5);//将窗口设置为默认的3/5大小
 
     createActions();
 }
@@ -224,7 +223,7 @@ void ImageProcesser::createActions(){
 QLabel *ImageProcesser::createFrame()
 {
     QLabel *label = new QLabel();
-    label->setFrameStyle(QFrame::Panel | QFrame::Raised);
+    label->setFrameStyle(QFrame::HLine | QFrame::Raised);
     return label;
 }
 

@@ -90,6 +90,7 @@ void ImageProcesser::showHistogram(QImage grayimage){
     chart->setAnimationOptions(QChart::SeriesAnimations);
     chart->legend()->setVisible(false);
 
+
     //表的容器
     chartview->setChart(chart);
     chartview->setRenderHint(QPainter::Antialiasing);

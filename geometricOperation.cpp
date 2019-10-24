@@ -162,14 +162,14 @@ void ImageProcesser::showRotation(double angle){
 void ImageProcesser::showSpinBox8(){
     hideSpinBoxes();
 
-    spinbox8_1->setPrefix("最近邻插值法：");
+    spinbox8_1->setPrefix("最近邻插值：");
     spinbox8_1->setSuffix("倍");
     spinbox8_1->setSingleStep(0.1);
     spinbox8_1->setRange(-1000, +1000);
     spinbox8_1->setValue(1);
     spinbox8_1->setVisible(true);
 
-    spinbox8_2->setPrefix("双线性插值法：");
+    spinbox8_2->setPrefix("双线性插值：");
     spinbox8_2->setSuffix("倍");
     spinbox8_2->setSingleStep(0.1);
     spinbox8_2->setRange(-1000, +1000);
