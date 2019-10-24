@@ -31,7 +31,10 @@ ImageProcesser::ImageProcesser():
     radioButton8(new QRadioButton("图像缩放：")),
     radioButton9(new QRadioButton("均值平滑")),
     radioButton10(new QRadioButton("中值平滑")),
-    radioButton11(new QRadioButton("高斯平滑"))
+    radioButton11(new QRadioButton("高斯平滑")),
+    radioButton12(new QRadioButton("Roberts锐化")),
+    radioButton13(new QRadioButton("Sobel锐化")),
+    radioButton14(new QRadioButton("Laplacian锐化"))
 {
 //初始化控件
     setCentralWidget(widget);//设置窗口中心部件
@@ -100,6 +103,13 @@ ImageProcesser::ImageProcesser():
     connect(radioButton10, SIGNAL(clicked()), this, SLOT(medianFilter()));
     radioButton11->setVisible(false);
     connect(radioButton11, SIGNAL(clicked()), this, SLOT(gaussFilter()));
+    //锐化
+    radioButton12->setVisible(false);
+    connect(radioButton12, SIGNAL(clicked()), this, SLOT(RobertsSharpen()));
+    radioButton13->setVisible(false);
+    connect(radioButton13, SIGNAL(clicked()), this, SLOT(SobelSharpen()));
+    radioButton14->setVisible(false);
+    connect(radioButton14, SIGNAL(clicked()), this, SLOT(LaplacianSharpen()));
 //设置布局
     QGridLayout *mainLayout = new QGridLayout;
     //左侧
@@ -122,14 +132,18 @@ ImageProcesser::ImageProcesser():
     mainLayout->addWidget(radioButton9, 2, 3, 1, 1);
     mainLayout->addWidget(radioButton10, 2, 4, 1, 1);
     mainLayout->addWidget(radioButton11, 2, 5, 1, 1);
-    mainLayout->addWidget(radioButton6, 3, 3, 1, 1);
-    mainLayout->addWidget(spinbox6_1, 3, 4, 1, 1);
-    mainLayout->addWidget(spinbox6_2, 3, 5, 1, 1);
-    mainLayout->addWidget(radioButton7, 4, 3, 1, 1);
-    mainLayout->addWidget(spinbox7, 4, 5, 1, 1);
-    mainLayout->addWidget(radioButton8, 5, 3, 1, 1);
-    mainLayout->addWidget(spinbox8_1, 5, 4, 1, 1);
-    mainLayout->addWidget(spinbox8_2, 5, 5, 1, 1);
+    mainLayout->addWidget(radioButton12, 3, 3, 1, 1);
+    mainLayout->addWidget(radioButton13, 3, 4, 1, 1);
+    mainLayout->addWidget(radioButton14, 3, 5, 1, 1);
+    mainLayout->addWidget(radioButton6, 4, 3, 1, 1);
+    mainLayout->addWidget(spinbox6_1, 4, 4, 1, 1);
+    mainLayout->addWidget(spinbox6_2, 4, 5, 1, 1);
+    mainLayout->addWidget(radioButton7, 5, 3, 1, 1);
+    mainLayout->addWidget(spinbox7, 5, 5, 1, 1);
+    mainLayout->addWidget(radioButton8, 6, 3, 1, 1);
+    mainLayout->addWidget(spinbox8_1, 6, 4, 1, 1);
+    mainLayout->addWidget(spinbox8_2, 6, 5, 1, 1);
+
     //设置行列比例
     mainLayout->setColumnStretch(0, 1);
     mainLayout->setColumnStretch(1, 1);

@@ -62,6 +62,9 @@ private slots://私有槽函数
     void meanFilter();//均值滤波 - 平滑
     void medianFilter();//中值滤波 - 平滑
     void gaussFilter();//高斯滤波 - 平滑
+    void RobertsSharpen();//Roberts锐化
+    void SobelSharpen();//Sobel锐化
+    void LaplacianSharpen();//Laplacian锐化
 
 private://私有函数
 //---imageprocesser.cpp---
@@ -124,6 +127,10 @@ private://私有函数
     QRadioButton *radioButton9;
     QRadioButton *radioButton10;
     QRadioButton *radioButton11;
+    //锐化
+    QRadioButton *radioButton12;
+    QRadioButton *radioButton13;
+    QRadioButton *radioButton14;
     //菜单命令
     QAction *saveAsAct;
     QAction *changeToGrayAct;

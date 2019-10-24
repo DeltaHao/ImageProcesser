@@ -124,6 +124,9 @@ void ImageProcesser::setImage(){
     radioButton9->setVisible(true);
     radioButton10->setVisible(true);
     radioButton11->setVisible(true);
+    radioButton12->setVisible(true);
+    radioButton13->setVisible(true);
+    radioButton14->setVisible(true);
 }
 //保存图片
 bool ImageProcesser::saveFile(const QString &fileName)

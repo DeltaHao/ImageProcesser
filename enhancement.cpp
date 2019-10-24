@@ -96,3 +96,18 @@ void ImageProcesser::gaussFilter(){
 
     showImage(tmp);
 }
+
+//锐化
+void ImageProcesser::RobertsSharpen(){
+    hideSpinBoxes();
+
+}
+
+void ImageProcesser::SobelSharpen(){
+    hideSpinBoxes();
+
+}
+void ImageProcesser::LaplacianSharpen(){
+    hideSpinBoxes();
+
+}
