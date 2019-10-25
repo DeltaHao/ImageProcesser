@@ -67,7 +67,8 @@ private slots://私有槽函数
     void RobertsSharpen();//Roberts锐化
     void SobelSharpen();//Sobel锐化
     void LaplacianSharpen();//Laplacian锐化
-
+    void showTemplateEdit();//显示模板编辑框和确认按钮
+    void toConvolution();//根据模板求卷积
 private://私有函数
 //---imageprocesser.cpp---
     void createActions();//创造命令
@@ -140,7 +141,10 @@ private://私有函数
     QRadioButton *radioButton12;
     QRadioButton *radioButton13;
     QRadioButton *radioButton14;
-
+    //给定模板求卷积
+    QRadioButton *radioButton15;
+    QPushButton *confrimEdit;
+    QTextEdit *templateEdit;
 
 
     //菜单命令

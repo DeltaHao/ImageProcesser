@@ -36,7 +36,10 @@ ImageProcesser::ImageProcesser():
     radioButton11(new QRadioButton("高斯平滑")),
     radioButton12(new QRadioButton("Roberts锐化")),
     radioButton13(new QRadioButton("Sobel锐化")),
-    radioButton14(new QRadioButton("Laplacian锐化"))
+    radioButton14(new QRadioButton("Laplacian锐化")),
+    radioButton15(new QRadioButton("根据模板求卷积：")),
+    confrimEdit(new QPushButton("确认")),
+    templateEdit(new QTextEdit)
 {
 //初始化控件
     setCentralWidget(widget);//设置窗口中心部件
@@ -58,6 +61,11 @@ ImageProcesser::ImageProcesser():
 
     //“显示灰度图”按钮
     connect(radioButton0, SIGNAL(clicked()), this, SLOT(showGrayImage()));
+    //暂存、撤销
+    connect(confirm, SIGNAL(clicked()), this, SLOT(confirmChange()));
+    confirm->setShortcut(tr("Ctrl+S"));
+    connect(revoke, SIGNAL(clicked()), this, SLOT(revokeChange()));
+    revoke->setShortcut(tr("Ctrl+Z"));
     //“均衡处理”按钮    
     connect(radioButton4, SIGNAL(clicked()), this, SLOT(showBalanceImage()));
     connect(radioButton5, SIGNAL(clicked()), this, SLOT(showNewBalanceImage()));
@@ -101,12 +109,11 @@ ImageProcesser::ImageProcesser():
     connect(radioButton12, SIGNAL(clicked()), this, SLOT(RobertsSharpen()));
     connect(radioButton13, SIGNAL(clicked()), this, SLOT(SobelSharpen()));
     connect(radioButton14, SIGNAL(clicked()), this, SLOT(LaplacianSharpen()));
-
-    //确认改变
-    connect(confirm, SIGNAL(clicked()), this, SLOT(confirmChange()));
-    confirm->setShortcut(tr("Ctrl+S"));
-    connect(revoke, SIGNAL(clicked()), this, SLOT(revokeChange()));
-    revoke->setShortcut(tr("Ctrl+Z"));
+    //给定模板求卷积
+    templateEdit->setEnabled(false);
+    connect(radioButton15, SIGNAL(clicked()), this, SLOT(showTemplateEdit()));
+    confrimEdit->setEnabled(false);
+    connect(confrimEdit, SIGNAL(clicked()), this, SLOT(toConvolution()));
 //设置布局
     QGridLayout *mainLayout = new QGridLayout;
     //右侧
@@ -156,18 +163,19 @@ ImageProcesser::ImageProcesser():
     mainLayout->addWidget(radioButton13, no, 4, 1, 1);
     mainLayout->addWidget(radioButton14, no++, 5, 1, 1);
 
+    mainLayout->addWidget(radioButton15, no++, 3, 1, 1);
+    mainLayout->addWidget(confrimEdit, no++, 3, 1, 1);
+    mainLayout->addWidget(templateEdit, no-2, 4, 2, 2);
+
     mainLayout->addWidget(scrollArea, 0, 0, no, 3);
 
     //设置行列比例
     mainLayout->setColumnStretch(0, 2);
     for(int i=1; i<6; i++)
         mainLayout->setColumnStretch(i, 1);
-
-
     mainLayout->setRowStretch(0, 19);
     for(int i=1; i<no; i++)
         mainLayout->setRowStretch(i, 1);
-
 
     widget->setLayout(mainLayout);
 
@@ -261,6 +269,8 @@ void ImageProcesser::hideSpinBoxes(){
     spinbox7->setVisible(false);
     spinbox8_1->setVisible(false);
     spinbox8_2->setVisible(false);
+    templateEdit->setEnabled(false);
+    confrimEdit->setEnabled(false);
 }
 
 void ImageProcesser::confirmChange(){
