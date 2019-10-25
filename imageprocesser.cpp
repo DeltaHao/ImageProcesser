@@ -10,7 +10,9 @@ ImageProcesser::ImageProcesser():
     scrollArea(new QScrollArea),
     chartview(new QChartView),
     GrayInfo(new QLabel),
-    radioButton0(new QRadioButton("显示灰度图")),
+    radioButton0(new QPushButton("显示灰度图")),
+    confirm(new QPushButton("暂存(Ctrl+s)")),
+    revoke(new QPushButton("撤销暂存(Ctrl+z)")),
     radioButton4(new QRadioButton("传统均衡")),
     radioButton5(new QRadioButton("优化均衡")),
     spinbox1(new QSpinBox),
@@ -38,7 +40,7 @@ ImageProcesser::ImageProcesser():
 {
 //初始化控件
     setCentralWidget(widget);//设置窗口中心部件
-    resize(1150, 730);//设置窗口大小
+    resize(1250, 730);//设置窗口大小
 
     //图片Label
     imageLabel->setVisible(false);
@@ -100,7 +102,11 @@ ImageProcesser::ImageProcesser():
     connect(radioButton13, SIGNAL(clicked()), this, SLOT(SobelSharpen()));
     connect(radioButton14, SIGNAL(clicked()), this, SLOT(LaplacianSharpen()));
 
-
+    //确认改变
+    connect(confirm, SIGNAL(clicked()), this, SLOT(confirmChange()));
+    confirm->setShortcut(tr("Ctrl+S"));
+    connect(revoke, SIGNAL(clicked()), this, SLOT(revokeChange()));
+    revoke->setShortcut(tr("Ctrl+Z"));
 //设置布局
     QGridLayout *mainLayout = new QGridLayout;
     //右侧
@@ -108,57 +114,64 @@ ImageProcesser::ImageProcesser():
     mainLayout->addWidget(GrayInfo, 1, 3, 1, 3);
     int no = 3;
 
-    mainLayout->addWidget(radioButton0, no++, 3, 1, 1);
-    mainLayout->addWidget(createFrame(), no++, 3, 1, 3);
-
+    mainLayout->addWidget(createFrame(), no, 3, 2, 3);
+    mainLayout->addWidget(radioButton0, no, 3, 1, 1);
+    mainLayout->addWidget(confirm, no, 4, 1, 1);
+    mainLayout->addWidget(revoke, no++, 5, 1, 1);
 
     mainLayout->addWidget(radioButton4, no, 3, 1, 1);
     mainLayout->addWidget(radioButton5, no++, 4, 1, 1);
+
     mainLayout->addWidget(radioButton1, no, 3, 1, 1);
     mainLayout->addWidget(spinbox1, no++, 5, 1, 1);
+
     mainLayout->addWidget(radioButton2, no, 3, 1, 1);
     mainLayout->addWidget(spinbox2_1, no, 4, 1, 1);
     mainLayout->addWidget(spinbox2_2, no++, 5, 1, 1);
+
+    mainLayout->addWidget(createFrame(), no, 3, 2, 3);
     mainLayout->addWidget(radioButton3, no, 3, 1, 1);
     mainLayout->addWidget(spinbox3_1, no, 4, 1, 1);
     mainLayout->addWidget(spinbox3_2, no++, 5, 1, 1);
-    mainLayout->addWidget(createFrame(), no++, 3, 1, 3);
+
 
     mainLayout->addWidget(radioButton6, no, 3, 1, 1);
     mainLayout->addWidget(spinbox6_1, no, 4, 1, 1);
     mainLayout->addWidget(spinbox6_2, no++, 5, 1, 1);
+
     mainLayout->addWidget(radioButton7, no, 3, 1, 1);
     mainLayout->addWidget(spinbox7, no++, 5, 1, 1);
+
+    mainLayout->addWidget(createFrame(), no, 3, 2, 3);
     mainLayout->addWidget(radioButton8, no, 3, 1, 1);
     mainLayout->addWidget(spinbox8_1, no, 4, 1, 1);
     mainLayout->addWidget(spinbox8_2, no++, 5, 1, 1);
-    mainLayout->addWidget(createFrame(), no++, 3, 1, 3);
 
     mainLayout->addWidget(radioButton9, no, 3, 1, 1);
     mainLayout->addWidget(radioButton10, no, 4, 1, 1);
     mainLayout->addWidget(radioButton11, no++, 5, 1, 1);
+
+
     mainLayout->addWidget(radioButton12, no, 3, 1, 1);
     mainLayout->addWidget(radioButton13, no, 4, 1, 1);
-    mainLayout->addWidget(radioButton14, no, 5, 1, 1);
+    mainLayout->addWidget(radioButton14, no++, 5, 1, 1);
 
-    mainLayout->addWidget(scrollArea, 0, 0, no+1, 3);
+    mainLayout->addWidget(scrollArea, 0, 0, no, 3);
 
     //设置行列比例
     mainLayout->setColumnStretch(0, 2);
-    mainLayout->setColumnStretch(1, 1);
-    mainLayout->setColumnStretch(2, 1);
-    mainLayout->setColumnStretch(3, 1);
-    mainLayout->setColumnStretch(4, 1);
-    mainLayout->setColumnStretch(5, 1);
+    for(int i=1; i<6; i++)
+        mainLayout->setColumnStretch(i, 1);
+
 
     mainLayout->setRowStretch(0, 19);
-    mainLayout->setRowStretch(1, 1);
-    mainLayout->setRowStretch(2, 1);
-    mainLayout->setRowStretch(3, 1);
-    mainLayout->setRowStretch(4, 1);
-    mainLayout->setRowStretch(5, 1);
+    for(int i=1; i<no; i++)
+        mainLayout->setRowStretch(i, 1);
+
 
     widget->setLayout(mainLayout);
+
+    statusBar()->showMessage(" 请从\"文件-打开\"打开图片");
 
     createActions();
 }
@@ -215,7 +228,7 @@ void ImageProcesser::createActions(){
 
 //菜单栏-关于
     QMenu *aboutMenu = menuBar()->addMenu(tr("&关于"));
-    QAction *about1Act = aboutMenu->addAction(tr("&关于作者..."), this, &ImageProcesser::about1);
+    QAction *about1Act = aboutMenu->addAction(tr("&帮助..."), this, &ImageProcesser::about1);
     QAction *about2Act = aboutMenu->addAction(tr("&项目介绍..."), this, &ImageProcesser::about2);
 }
 
@@ -226,7 +239,6 @@ QLabel *ImageProcesser::createFrame()
     label->setFrameStyle(QFrame::HLine | QFrame::Raised);
     return label;
 }
-
 
 //更新画面
 void ImageProcesser::showImage(QImage img){
@@ -249,4 +261,17 @@ void ImageProcesser::hideSpinBoxes(){
     spinbox7->setVisible(false);
     spinbox8_1->setVisible(false);
     spinbox8_2->setVisible(false);
+}
+
+void ImageProcesser::confirmChange(){
+    if(showingImage.format() == QImage::Format_Indexed8)
+        grayimage = showingImage;
+    spinbox7->setValue(0);
+    statusBar()->showMessage(" 已暂存中间结果");
+}
+void ImageProcesser::revokeChange(){
+    grayimage = tempImage;
+    spinbox7->setValue(0);
+    showGrayImage();
+    statusBar()->showMessage("");
 }

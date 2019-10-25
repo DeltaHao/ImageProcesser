@@ -14,8 +14,8 @@ void ImageProcesser::showGrayImage(){
 void ImageProcesser::showBalanceImage(){
     hideSpinBoxes();
 
-    int width = image.width();
-    int height = image.height();
+    int width = grayimage.width();
+    int height = grayimage.height();
     QImage tmp(width, height, QImage::Format_Indexed8);
     //设置灰度表
     tmp.setColorCount(256);
@@ -56,8 +56,8 @@ void ImageProcesser::showNewBalanceImage(){
     hideSpinBoxes();
 
     //将图像分成灰度大于平均值与小于平均值的两部分， 分别进行均衡化处理
-    int width = image.width();
-    int height = image.height();
+    int width = grayimage.width();
+    int height = grayimage.height();
     QImage tmp(width, height, QImage::Format_Indexed8);
     tmp.setColorCount(256);
     for(int i=0;i<256;i++){
@@ -122,8 +122,8 @@ void ImageProcesser::showSpinBox1(){
 
 }
 void ImageProcesser::showBinaryImage(int threshold){
-    int h = image.height();
-    int w = image.width();
+    int w = grayimage.width();
+    int h = grayimage.height();
     QImage tmp(w, h, QImage::Format_Mono);
     for(int i=0; i<w; i++){
         for(int j=0; j<h; j++){
@@ -157,8 +157,8 @@ void ImageProcesser::showSpinBox2(){
 void ImageProcesser::showlinearImage1(double a){
     spinbox2_2->setValue(0);
 
-    int width = image.width();
-    int height = image.height();
+    int width = grayimage.width();
+    int height = grayimage.height();
     QImage tmp(width, height, QImage::Format_Indexed8);
     tmp.setColorCount(256);
     for(int i=0;i<256;i++){
@@ -176,8 +176,8 @@ void ImageProcesser::showlinearImage1(double a){
 void ImageProcesser::showlinearImage2(int b){
     spinbox2_1->setValue(1);
 
-    int h = image.height();
-    int w = image.width();
+    int w = grayimage.width();
+    int h = grayimage.height();
     QImage tmp(w, h, QImage::Format_Indexed8);
     tmp.setColorCount(256);
     for(int i=0;i<256;i++){
@@ -214,8 +214,8 @@ void ImageProcesser::showSpinBox3(){
 void ImageProcesser::showUnlinearImage1(double a){
     spinbox3_2->setValue(1);
 
-    int width = image.width();
-    int height = image.height();
+    int width = grayimage.width();
+    int height = grayimage.height();
     QImage tmp(width, height, QImage::Format_Indexed8);
     tmp.setColorCount(256);
     for(int i=0;i<256;i++){
@@ -235,8 +235,8 @@ void ImageProcesser::showUnlinearImage1(double a){
 void ImageProcesser::showUnlinearImage2(double b){
     spinbox3_1->setValue(0.5);
 
-    int h = image.height();
-    int w = image.width();
+    int h = grayimage.height();
+    int w = grayimage.width();
     QImage tmp(w, h, QImage::Format_Indexed8);
     tmp.setColorCount(256);
     for(int i=0;i<256;i++){

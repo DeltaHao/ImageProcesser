@@ -23,6 +23,8 @@ private slots://私有槽函数
     void open();//打开图片
     void saveAs();//另存为    
     void showOriginal();//显示原图
+    void confirmChange();//确认改变
+    void revokeChange();//撤销改变
     //将8位灰度图像转换为8幅位平面二值图
     void changeToBitplane1();
     void changeToBitplane2();
@@ -84,11 +86,14 @@ private://私有函数
     void showHistogram(QImage);//显示灰度直方图            
 
 //图像及其相关信息
-    QImage image;//原图像
     double scaleFactor;//图像的显示比例
+    QImage image;//原图像
+
     QImage grayimage;//灰度图像
     double grayInfo[4];//灰度图像的四个相关信息：平均灰度、中值灰度、标准差和像素总数
+
     QImage bitplaneimage[8];//8幅位平面二值图
+    QImage tempImage;//暂存图像
 
     QImage showingImage;//正在展示的图像
     double showinggrayInfo[4];//正在展示的灰度图像的四个相关信息：平均灰度、中值灰度、标准差和像素总数
@@ -99,7 +104,10 @@ private://私有函数
     QChartView *chartview;    
     QLabel *GrayInfo;
 
-    QRadioButton *radioButton0;//显示灰度图
+    QPushButton *radioButton0;//显示灰度图
+    QPushButton *confirm;//确认改变
+    QPushButton *revoke;//撤销改变
+
     QRadioButton *radioButton4;//均衡处理
     QRadioButton *radioButton5;//优化均衡
     //根据阈值灰度生成二值图
@@ -132,6 +140,7 @@ private://私有函数
     QRadioButton *radioButton12;
     QRadioButton *radioButton13;
     QRadioButton *radioButton14;
+
 
 
     //菜单命令

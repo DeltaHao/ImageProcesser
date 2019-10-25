@@ -21,8 +21,8 @@ void ImageProcesser::showSpinBox6(){
 }
 void ImageProcesser::showTranslation1(int len){
     spinbox6_2->setValue(0);
-    int h = image.height();
-    int w = image.width();
+    int h = grayimage.height();
+    int w = grayimage.width();
     QImage tmp(w+abs(len), h, QImage::Format_Indexed8);
     tmp.setColorCount(256);
     for(int i=0;i<256;i++){
@@ -61,8 +61,8 @@ void ImageProcesser::showTranslation1(int len){
 void ImageProcesser::showTranslation2(int len){
     spinbox6_1->setValue(0);
 
-    int h = image.height();
-    int w = image.width();
+    int h = grayimage.height();
+    int w = grayimage.width();
     QImage tmp(w, h+abs(len), QImage::Format_Indexed8);
     tmp.setColorCount(256);
     for(int i=0;i<256;i++){
@@ -114,8 +114,8 @@ void ImageProcesser::showSpinBox7(){
 }
 void ImageProcesser::showRotation(double angle){
     double R = PI*angle/180.0;//弧度
-    int w = image.width();
-    int h = image.height();
+    int h = grayimage.height();
+    int w = grayimage.width();
     //确定画布大小
     int newW = (int)(std::abs(w*cos(R)) + std::abs(h*sin(R)) + 0.5);
     int newH = (int)(std::abs(w*sin(R)) + std::abs(h*cos(R)) + 0.5);
@@ -162,17 +162,17 @@ void ImageProcesser::showRotation(double angle){
 void ImageProcesser::showSpinBox8(){
     hideSpinBoxes();
 
-    spinbox8_1->setPrefix("最近邻插值：");
+    spinbox8_1->setPrefix("最近邻:");
     spinbox8_1->setSuffix("倍");
     spinbox8_1->setSingleStep(0.1);
-    spinbox8_1->setRange(-1000, +1000);
+    spinbox8_1->setRange(-100, +100);
     spinbox8_1->setValue(1);
     spinbox8_1->setVisible(true);
 
-    spinbox8_2->setPrefix("双线性插值：");
+    spinbox8_2->setPrefix("双线性:");
     spinbox8_2->setSuffix("倍");
     spinbox8_2->setSingleStep(0.1);
-    spinbox8_2->setRange(-1000, +1000);
+    spinbox8_2->setRange(-100, +100);
     spinbox8_2->setValue(1);
     spinbox8_2->setVisible(true);
 
@@ -181,8 +181,8 @@ void ImageProcesser::showSpinBox8(){
 void ImageProcesser::nearstInterpolation(double factor){
     spinbox8_2->setValue(1);
 
-    int w = (int)(image.width() * factor + 0.5);
-    int h = (int)(image.height() * factor + 0.5);
+    int w = (int)(grayimage.width() * factor + 0.5);
+    int h = (int)(grayimage.height() * factor + 0.5);
     QImage tmp(w, h, QImage::Format_Indexed8);
     tmp.setColorCount(256);
     for(int i=0;i<256;i++)
@@ -191,7 +191,7 @@ void ImageProcesser::nearstInterpolation(double factor){
         for(int j=0; j<h; j++){
             int old_i = (int)(i / factor + 0.5);
             int old_j = (int)(j / factor + 0.5);
-            if(old_i<0 || old_i >= image.width() || old_j<0 || old_j >= image.height())
+            if(old_i<0 || old_i >= grayimage.width() || old_j<0 || old_j >= grayimage.height())
                 tmp.setPixel(i, j, 255);
             else{
                 int index = grayimage.pixelIndex(old_i, old_j);
@@ -205,8 +205,8 @@ void ImageProcesser::nearstInterpolation(double factor){
 void ImageProcesser::bilinearInterpolation(double factor){
     spinbox8_1->setValue(1);
 
-    int w = (int)(image.width() * factor + 0.5);
-    int h = (int)(image.height() * factor + 0.5);
+    int w = (int)(grayimage.width() * factor + 0.5);
+    int h = (int)(grayimage.height() * factor + 0.5);
     QImage tmp(w, h, QImage::Format_Indexed8);
     tmp.setColorCount(256);
     for(int i=0;i<256;i++)
@@ -216,7 +216,7 @@ void ImageProcesser::bilinearInterpolation(double factor){
             for(int j=0; j<h; j++){
                 int old_i = (int)(i / factor + 0.5);
                 int old_j = (int)(j / factor + 0.5);
-                if(old_i<0 || old_i >= image.width() || old_j<0 || old_j >= image.height())
+                if(old_i<0 || old_i >= grayimage.width() || old_j<0 || old_j >= grayimage.height())
                     tmp.setPixel(i, j, 255);
                 else{
                     int index = grayimage.pixelIndex(old_i, old_j);
@@ -238,7 +238,7 @@ void ImageProcesser::bilinearInterpolation(double factor){
                 y2 = y1 + 1;
 
                 //判断边界
-                if(y2 >= image.height() || x2 >= image.width()){
+                if(y2 >= grayimage.height() || x2 >= grayimage.width()){
                     tmp.setPixel(i, j, (grayimage.pixelIndex(x1, y1)));
                     continue;
                 }

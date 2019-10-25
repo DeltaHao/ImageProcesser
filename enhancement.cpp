@@ -6,8 +6,8 @@
 void ImageProcesser::meanFilter(){
     hideSpinBoxes();
 
-    int h = image.height();
-    int w = image.width();
+    int h = grayimage.height();
+    int w = grayimage.width();
 
     QImage tmp = grayimage;
     tmp.setColorCount(256);
@@ -35,8 +35,8 @@ void ImageProcesser::meanFilter(){
 void ImageProcesser::medianFilter(){
     hideSpinBoxes();
 
-    int h = image.height();
-    int w = image.width();
+    int h = grayimage.height();
+    int w = grayimage.width();
 
     QImage tmp = grayimage;
     tmp.setColorCount(256);
@@ -68,8 +68,8 @@ void ImageProcesser::medianFilter(){
 void ImageProcesser::gaussFilter(){
     hideSpinBoxes();
 
-    int h = image.height();
-    int w = image.width();
+    int h = grayimage.height();
+    int w = grayimage.width();
 
     QImage tmp = grayimage;
     tmp.setColorCount(256);

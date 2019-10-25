@@ -43,7 +43,6 @@ bool ImageProcesser::loadFile(const QString &fileName){
     toBitplane();//生成位平面图
 
     setImage();
-
     setWindowFilePath(fileName);
 
     const QString message = tr("已打开 \"%1\", %2x%3, Depth: %4")
@@ -75,6 +74,7 @@ void ImageProcesser::toGray(){
          }
     }
     grayimage = tmp;
+    tempImage = tmp;
     calculateGrayInfo(grayimage, grayInfo);//计算并保存灰度图相关信息
 }
 void ImageProcesser::toBitplane(){
@@ -252,9 +252,7 @@ void ImageProcesser::normalSize(){
 //------关于栏--------------------------------------
 //关于
 void ImageProcesser::about1(){
-    QMessageBox:: about(this, tr("作者"),tr("<p>作者：郝正亮</p>"
-                                          "<p>学号：1120172919</p>"
-                                          ));
+    QMessageBox:: about(this, tr("帮助"),tr("当需要进行多步处理时，可以通过“暂存(ctrl+s)”键来保存中间结果 "));
 }
 void ImageProcesser::about2(){
     QMessageBox:: about(this, tr("项目介绍"),tr("\
@@ -279,5 +277,7 @@ void ImageProcesser::about2(){
                                                                                         <li>在已有程序框架上，加入sobel算子、 Prewitt算子和拉普拉斯算子实现边缘检测，并利用边缘跟踪法实现对边缘点的闭合操作。（自己找示例图，最好是灰度图像）<li>\
                                                                                         <li>编写程序，实现霍夫变换检测直线。<li>\
                                                                                         </ul>"
+                                            "<p>作者：郝正亮</p>"
+                                            "<p>学号：1120172919</p>"
                                             "<p>项目源码：https://github.com/DeltaHao/ImageProcesser</p>"));
 }
