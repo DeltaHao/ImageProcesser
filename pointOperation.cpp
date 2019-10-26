@@ -10,6 +10,11 @@ void ImageProcesser::showGrayImage(){
     showImage(grayimage);
 }
 
+void ImageProcesser::showIndex8Image(){
+    hideSpinBoxes();
+    //todo
+}
+
 //显示均衡处理后的图片
 void ImageProcesser::showBalanceImage(){
     hideSpinBoxes();

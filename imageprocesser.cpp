@@ -9,122 +9,116 @@ ImageProcesser::ImageProcesser():
     imageLabel(new QLabel),
     scrollArea(new QScrollArea),
     chartview(new QChartView),
-    GrayInfo(new QLabel),
-    radioButton0(new QPushButton("显示灰度图")),
-    confirm(new QPushButton("暂存(Ctrl+s)")),
-    revoke(new QPushButton("撤销暂存(Ctrl+z)")),
-    radioButton4(new QRadioButton("传统均衡")),
-    radioButton5(new QRadioButton("优化均衡")),
-    spinbox1(new QSpinBox),
-    radioButton1(new QRadioButton("根据阈值灰度生成二值图：")),
-    spinbox2_1(new QDoubleSpinBox),
-    spinbox2_2(new QSpinBox),
-    radioButton2(new QRadioButton("线性变换：")),    
-    spinbox3_1(new QDoubleSpinBox),
-    spinbox3_2(new QDoubleSpinBox),
-    radioButton3(new QRadioButton("非线性变换：")),
-    spinbox6_1(new QSpinBox),
-    spinbox6_2(new QSpinBox),
-    radioButton6(new QRadioButton("图像平移：")),
-    spinbox7(new QDoubleSpinBox),
-    radioButton7(new QRadioButton("图像旋转：")),
-    spinbox8_1(new QDoubleSpinBox),
-    spinbox8_2(new QDoubleSpinBox),
-    radioButton8(new QRadioButton("图像缩放：")),
-    radioButton9(new QRadioButton("均值平滑")),
-    radioButton10(new QRadioButton("中值平滑")),
-    radioButton11(new QRadioButton("高斯平滑")),
-    radioButton12(new QRadioButton("Roberts锐化")),
-    radioButton13(new QRadioButton("Sobel锐化")),
-    radioButton14(new QRadioButton("Laplacian锐化")),
-    radioButton15(new QRadioButton("根据模板求卷积：")),
-    confrimEdit(new QPushButton("确认")),
-    templateEdit(new QTextEdit)
+    GrayInfo(new QLabel)
 {
-//初始化控件
     setCentralWidget(widget);//设置窗口中心部件
-    resize(1250, 730);//设置窗口大小
-
+    resize(1250, 730);//设置窗口大小  
+    statusBar()->showMessage(" 请从\"文件-打开\"打开图片");//设置提示栏
+    createMenuActions();//生成菜单栏
+    createWidgets();//生成处理栏
+    showHistogram(image);//生成灰度直方图
+//初始化控件
     //图片Label
-    imageLabel->setVisible(false);
     imageLabel->setBackgroundRole(QPalette::Base);//设置背景颜色
     imageLabel->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);//设置大小可调整
     imageLabel->setScaledContents(true);//设置窗口自适应
-
     //滚动框
     scrollArea->setBackgroundRole(QPalette::Dark);
     scrollArea->setWidget(imageLabel);//将scrollArea中的内容设置为imageLabel
     scrollArea->setAlignment(Qt::AlignCenter); 
 
-    //灰度直方图
-    showHistogram(image);
 
+//设置布局
     //“显示灰度图”按钮
+    QRadioButton *radioButton0 = new QRadioButton("灰度图");
     connect(radioButton0, SIGNAL(clicked()), this, SLOT(showGrayImage()));
-    //暂存、撤销
-    connect(confirm, SIGNAL(clicked()), this, SLOT(confirmChange()));
-    confirm->setShortcut(tr("Ctrl+S"));
-    connect(revoke, SIGNAL(clicked()), this, SLOT(revokeChange()));
-    revoke->setShortcut(tr("Ctrl+Z"));
-    //“均衡处理”按钮    
-    connect(radioButton4, SIGNAL(clicked()), this, SLOT(showBalanceImage()));
-    connect(radioButton5, SIGNAL(clicked()), this, SLOT(showNewBalanceImage()));
     //根据阈值灰度生成二值图
-    spinbox1->setVisible(false);
+    QRadioButton *radioButton1 = new QRadioButton("根据阈值灰度生成二值图：");
+    spinbox1 = new QSpinBox;
     connect(radioButton1, SIGNAL(clicked()), this, SLOT(showSpinBox1()));
     connect(spinbox1, SIGNAL(valueChanged(int)), this, SLOT(showBinaryImage(int)));
     //线性变换
-    spinbox2_1->setVisible(false);
-    spinbox2_2->setVisible(false);
+    QRadioButton *radioButton2 = new QRadioButton("线性变换：");
+    spinbox2_1 = new QDoubleSpinBox;
+    spinbox2_2 = new QSpinBox;
     connect(radioButton2, SIGNAL(clicked()), this, SLOT(showSpinBox2()));
     connect(spinbox2_1, SIGNAL(valueChanged(double)), this, SLOT(showlinearImage1(double)));
     connect(spinbox2_2, SIGNAL(valueChanged(int)), this, SLOT(showlinearImage2(int)));
     //非线性变换
-    spinbox3_1->setVisible(false);
-    spinbox3_2->setVisible(false);
+    QRadioButton *radioButton3 = new QRadioButton("非线性变换：");
+    spinbox3_1 = new QDoubleSpinBox;
+    spinbox3_2 = new QDoubleSpinBox;
     connect(radioButton3, SIGNAL(clicked()), this, SLOT(showSpinBox3()));
     connect(spinbox3_1, SIGNAL(valueChanged(double)), this, SLOT(showUnlinearImage1(double)));
     connect(spinbox3_2, SIGNAL(valueChanged(double)), this, SLOT(showUnlinearImage2(double)));
+    //“均衡处理”按钮
+    QRadioButton *radioButton4 = new QRadioButton("传统均衡");//均衡处理
+    QRadioButton *radioButton5 = new QRadioButton("优化均衡");//优化均衡
+    connect(radioButton4, SIGNAL(clicked()), this, SLOT(showBalanceImage()));
+    connect(radioButton5, SIGNAL(clicked()), this, SLOT(showNewBalanceImage()));
     //平移
-    spinbox6_1->setVisible(false);
-    spinbox6_2->setVisible(false);
+    QRadioButton *radioButton6 = new QRadioButton("图像平移：");
+    spinbox6_1 = new QSpinBox;
+    spinbox6_2 = new QSpinBox;
     connect(radioButton6, SIGNAL(clicked()), this, SLOT(showSpinBox6()));
     connect(spinbox6_1, SIGNAL(valueChanged(int)), this, SLOT(showTranslation1(int)));
     connect(spinbox6_2, SIGNAL(valueChanged(int)), this, SLOT(showTranslation2(int)));
     //旋转
-    spinbox7->setVisible(false);
+    QRadioButton *radioButton7 = new QRadioButton("图像旋转：");
+    spinbox7 = new QDoubleSpinBox;
     connect(radioButton7, SIGNAL(clicked()), this, SLOT(showSpinBox7()));
     connect(spinbox7, SIGNAL(valueChanged(double)), this, SLOT(showRotation(double)));
     //缩放
-    spinbox8_1->setVisible(false);
-    spinbox8_2->setVisible(false);
+    QRadioButton *radioButton8 = new QRadioButton("图像缩放：");
+    spinbox8_1 = new QDoubleSpinBox;
+    spinbox8_2 = new QDoubleSpinBox;
     connect(radioButton8, SIGNAL(clicked()), this, SLOT(showSpinBox8()));
     connect(spinbox8_1, SIGNAL(valueChanged(double)), this, SLOT(nearstInterpolation(double)));
     connect(spinbox8_2, SIGNAL(valueChanged(double)), this, SLOT(bilinearInterpolation(double)));
     //平滑
+    QRadioButton *radioButton9 = (new QRadioButton("均值平滑"));
+    QRadioButton *radioButton10 = (new QRadioButton("中值平滑"));
+    QRadioButton *radioButton11 = (new QRadioButton("高斯平滑"));
     connect(radioButton9, SIGNAL(clicked()), this, SLOT(meanFilter()));
     connect(radioButton10, SIGNAL(clicked()), this, SLOT(medianFilter()));
     connect(radioButton11, SIGNAL(clicked()), this, SLOT(gaussFilter()));
     //锐化
+    QRadioButton *radioButton12 = (new QRadioButton("Roberts锐化"));
+    QRadioButton *radioButton13 = (new QRadioButton("Sobel锐化"));
+    QRadioButton *radioButton14 = (new QRadioButton("Laplacian锐化"));
     connect(radioButton12, SIGNAL(clicked()), this, SLOT(RobertsSharpen()));
     connect(radioButton13, SIGNAL(clicked()), this, SLOT(SobelSharpen()));
     connect(radioButton14, SIGNAL(clicked()), this, SLOT(LaplacianSharpen()));
     //给定模板求卷积
-    templateEdit->setEnabled(false);
+    QRadioButton *radioButton15 = new QRadioButton("根据模板求卷积：");
+    confrimEdit = new QPushButton("确认");
+    templateEdit = new QTextEdit;
     connect(radioButton15, SIGNAL(clicked()), this, SLOT(showTemplateEdit()));
-    confrimEdit->setEnabled(false);
     connect(confrimEdit, SIGNAL(clicked()), this, SLOT(toConvolution()));
-//设置布局
+    //暂存、撤销
+    QDialogButtonBox *buttonbox = new QDialogButtonBox;
+    QPushButton *confirm = buttonbox->addButton("暂存(Ctrl+S)", QDialogButtonBox::ActionRole);
+    QPushButton *revoke = buttonbox->addButton("撤销(Ctrl+Z)", QDialogButtonBox::ActionRole);
+    connect(confirm, SIGNAL(clicked()), this, SLOT(confirmChange()));
+    confirm->setShortcut(tr("Ctrl+S"));
+    connect(revoke, SIGNAL(clicked()), this, SLOT(revokeChange()));
+    revoke->setShortcut(tr("Ctrl+Z"));
+    //显示256色彩图
+    QRadioButton *radioButton16 = new QRadioButton("256色彩图");
+    connect(radioButton16, SIGNAL(clicked()), this, SLOT(showIndex8Image()));
     QGridLayout *mainLayout = new QGridLayout;
-    //右侧
+
+    hideSpinBoxes();//隐藏各种输入框
+
+//设置布局
     mainLayout->addWidget(chartview, 0, 3, 3, 3);
     mainLayout->addWidget(GrayInfo, 1, 3, 1, 3);
     int no = 3;
 
-    mainLayout->addWidget(createFrame(), no, 3, 2, 3);
+    mainLayout->addWidget(getSeparator(), no, 3, 2, 3);
     mainLayout->addWidget(radioButton0, no, 3, 1, 1);
-    mainLayout->addWidget(confirm, no, 4, 1, 1);
-    mainLayout->addWidget(revoke, no++, 5, 1, 1);
+    mainLayout->addWidget(radioButton16, no, 4, 1, 1);
+    mainLayout->addWidget(buttonbox, no++, 5, 1, 1);
 
     mainLayout->addWidget(radioButton4, no, 3, 1, 1);
     mainLayout->addWidget(radioButton5, no++, 4, 1, 1);
@@ -136,7 +130,7 @@ ImageProcesser::ImageProcesser():
     mainLayout->addWidget(spinbox2_1, no, 4, 1, 1);
     mainLayout->addWidget(spinbox2_2, no++, 5, 1, 1);
 
-    mainLayout->addWidget(createFrame(), no, 3, 2, 3);
+    mainLayout->addWidget(getSeparator(), no, 3, 2, 3);
     mainLayout->addWidget(radioButton3, no, 3, 1, 1);
     mainLayout->addWidget(spinbox3_1, no, 4, 1, 1);
     mainLayout->addWidget(spinbox3_2, no++, 5, 1, 1);
@@ -149,7 +143,7 @@ ImageProcesser::ImageProcesser():
     mainLayout->addWidget(radioButton7, no, 3, 1, 1);
     mainLayout->addWidget(spinbox7, no++, 5, 1, 1);
 
-    mainLayout->addWidget(createFrame(), no, 3, 2, 3);
+    mainLayout->addWidget(getSeparator(), no, 3, 2, 3);
     mainLayout->addWidget(radioButton8, no, 3, 1, 1);
     mainLayout->addWidget(spinbox8_1, no, 4, 1, 1);
     mainLayout->addWidget(spinbox8_2, no++, 5, 1, 1);
@@ -157,7 +151,6 @@ ImageProcesser::ImageProcesser():
     mainLayout->addWidget(radioButton9, no, 3, 1, 1);
     mainLayout->addWidget(radioButton10, no, 4, 1, 1);
     mainLayout->addWidget(radioButton11, no++, 5, 1, 1);
-
 
     mainLayout->addWidget(radioButton12, no, 3, 1, 1);
     mainLayout->addWidget(radioButton13, no, 4, 1, 1);
@@ -179,13 +172,10 @@ ImageProcesser::ImageProcesser():
 
     widget->setLayout(mainLayout);
 
-    statusBar()->showMessage(" 请从\"文件-打开\"打开图片");
-
-    createActions();
 }
 
-//创建菜单动作
-void ImageProcesser::createActions(){
+//生成菜单栏
+void ImageProcesser::createMenuActions(){
 //菜单栏-文件
     QMenu *fileMenu = menuBar()->addMenu(tr("&文件"));
     //打开按钮
@@ -239,24 +229,13 @@ void ImageProcesser::createActions(){
     QAction *about1Act = aboutMenu->addAction(tr("&帮助..."), this, &ImageProcesser::about1);
     QAction *about2Act = aboutMenu->addAction(tr("&项目介绍..."), this, &ImageProcesser::about2);
 }
-
 //生成边框
-QLabel *ImageProcesser::createFrame()
+QLabel *ImageProcesser::getSeparator()
 {
     QLabel *label = new QLabel();
     label->setFrameStyle(QFrame::HLine | QFrame::Raised);
     return label;
 }
-
-//更新画面
-void ImageProcesser::showImage(QImage img){
-    showingImage = img;
-    imageLabel->setPixmap(QPixmap::fromImage(img));
-    imageLabel->adjustSize();//imageLabel的大小可调整
-
-    showHistogram(img);//显示直方图
-}
-
 //隐藏其它输入框
 void ImageProcesser::hideSpinBoxes(){
     spinbox1->setVisible(false);
@@ -271,6 +250,14 @@ void ImageProcesser::hideSpinBoxes(){
     spinbox8_2->setVisible(false);
     templateEdit->setEnabled(false);
     confrimEdit->setEnabled(false);
+}
+//更新画面
+void ImageProcesser::showImage(QImage img){
+    showingImage = img;
+    imageLabel->setPixmap(QPixmap::fromImage(img));
+    imageLabel->adjustSize();//imageLabel的大小可调整
+
+    showHistogram(img);//显示直方图
 }
 
 void ImageProcesser::confirmChange(){

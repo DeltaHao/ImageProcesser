@@ -18,8 +18,8 @@ class ImageProcesser : public QMainWindow
 public:
     ImageProcesser();//构造函数
 
-private slots://私有槽函数
-//---imageprocesser.cpp---
+private slots://槽函数
+//---menuActions.cpp---
     void open();//打开图片
     void saveAs();//另存为    
     void showOriginal();//显示原图
@@ -41,6 +41,7 @@ private slots://私有槽函数
     void about2();//显示“关于软件”信息
 //---pointOperation.cpp---
     void showGrayImage();//显示灰度图原图
+    void showIndex8Image();//显示256色彩图
     void showBalanceImage();//显示均衡处理后的图片
     void showNewBalanceImage();//显示优化均衡处理后的图片
     void showSpinBox1();//显示阈值灰度调节框
@@ -71,10 +72,10 @@ private slots://私有槽函数
     void toConvolution();//根据模板求卷积
 private://私有函数
 //---imageprocesser.cpp---
-    void createActions();//创造命令
+    void createMenuActions();//生成菜单栏
     void showImage(QImage);//更新画面
     void hideSpinBoxes();//隐藏所有调节框
-    QLabel *createFrame();
+    QLabel *getSeparator();
 //---menuAction.cpp---
     bool loadFile(const QString &);
     bool saveFile(const QString &filename);
@@ -105,47 +106,26 @@ private://私有函数
     QChartView *chartview;    
     QLabel *GrayInfo;
 
-    QPushButton *radioButton0;//显示灰度图
-    QPushButton *confirm;//确认改变
-    QPushButton *revoke;//撤销改变
-
-    QRadioButton *radioButton4;//均衡处理
-    QRadioButton *radioButton5;//优化均衡
     //根据阈值灰度生成二值图
     QSpinBox *spinbox1;
-    QRadioButton *radioButton1;
     //线性变换
     QDoubleSpinBox *spinbox2_1;
     QSpinBox *spinbox2_2;
-    QRadioButton *radioButton2;
     //非线性变换
     QDoubleSpinBox *spinbox3_1;
     QDoubleSpinBox *spinbox3_2;
-    QRadioButton *radioButton3;
     //平移
     QSpinBox *spinbox6_1;
     QSpinBox *spinbox6_2;
-    QRadioButton *radioButton6;
     //旋转
     QDoubleSpinBox *spinbox7;
     QRadioButton *radioButton7;
     //缩放
     QDoubleSpinBox *spinbox8_1;
     QDoubleSpinBox *spinbox8_2;
-    QRadioButton *radioButton8;
-    //平滑
-    QRadioButton *radioButton9;
-    QRadioButton *radioButton10;
-    QRadioButton *radioButton11;
-    //锐化
-    QRadioButton *radioButton12;
-    QRadioButton *radioButton13;
-    QRadioButton *radioButton14;
     //给定模板求卷积
-    QRadioButton *radioButton15;
     QPushButton *confrimEdit;
     QTextEdit *templateEdit;
-
 
     //菜单命令
     QAction *saveAsAct;
