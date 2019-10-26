@@ -70,6 +70,11 @@ private slots://槽函数
     void LaplacianSharpen();//Laplacian锐化
     void showTemplateEdit();//显示模板编辑框和确认按钮
     void toConvolution();//根据模板求卷积
+//---segmentation.cpp---
+    void SobelEdge();
+    void PrewittEdge();
+    void LaplacianEdge();
+    void HoughTransform();
 private://私有函数
 //---imageprocesser.cpp---
     void createMenuActions();//生成菜单栏

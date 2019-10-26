@@ -15,7 +15,6 @@ ImageProcesser::ImageProcesser():
     resize(1250, 730);//设置窗口大小  
     statusBar()->showMessage(" 请从\"文件-打开\"打开图片");//设置提示栏
     createMenuActions();//生成菜单栏
-    createWidgets();//生成处理栏
     showHistogram(image);//生成灰度直方图
 //初始化控件
     //图片Label
@@ -83,9 +82,9 @@ ImageProcesser::ImageProcesser():
     connect(radioButton10, SIGNAL(clicked()), this, SLOT(medianFilter()));
     connect(radioButton11, SIGNAL(clicked()), this, SLOT(gaussFilter()));
     //锐化
-    QRadioButton *radioButton12 = (new QRadioButton("Roberts锐化"));
-    QRadioButton *radioButton13 = (new QRadioButton("Sobel锐化"));
-    QRadioButton *radioButton14 = (new QRadioButton("Laplacian锐化"));
+    QRadioButton *radioButton12 = (new QRadioButton("锐化(Roberts)"));
+    QRadioButton *radioButton13 = (new QRadioButton("锐化(Sobel)"));
+    QRadioButton *radioButton14 = (new QRadioButton("锐化(Laplace)"));
     connect(radioButton12, SIGNAL(clicked()), this, SLOT(RobertsSharpen()));
     connect(radioButton13, SIGNAL(clicked()), this, SLOT(SobelSharpen()));
     connect(radioButton14, SIGNAL(clicked()), this, SLOT(LaplacianSharpen()));
@@ -95,30 +94,42 @@ ImageProcesser::ImageProcesser():
     templateEdit = new QTextEdit;
     connect(radioButton15, SIGNAL(clicked()), this, SLOT(showTemplateEdit()));
     connect(confrimEdit, SIGNAL(clicked()), this, SLOT(toConvolution()));
+
+    //显示256色彩图
+    QRadioButton *radioButton16 = new QRadioButton("256色彩图");
+    connect(radioButton16, SIGNAL(clicked()), this, SLOT(showIndex8Image()));
+
+    //边缘跟踪
+    QRadioButton *radioButton17 = new QRadioButton("边缘检测(Sobel)");
+    connect(radioButton17, SIGNAL(clicked()), this, SLOT(SobelEdge()));
+    QRadioButton *radioButton18 = new QRadioButton("边缘检测(Prewitt)");
+    connect(radioButton18, SIGNAL(clicked()), this, SLOT(PrewittEdge()));
+    QRadioButton *radioButton19 = new QRadioButton("边缘检测(Laplace)");
+    connect(radioButton19, SIGNAL(clicked()), this, SLOT(LaplacianEdge()));
+    QRadioButton *radioButton20 = new QRadioButton("霍夫变换");
+    connect(radioButton20, SIGNAL(clicked()), this, SLOT(HoughTransform()));
+
     //暂存、撤销
-    QDialogButtonBox *buttonbox = new QDialogButtonBox;
-    QPushButton *confirm = buttonbox->addButton("暂存(Ctrl+S)", QDialogButtonBox::ActionRole);
-    QPushButton *revoke = buttonbox->addButton("撤销(Ctrl+Z)", QDialogButtonBox::ActionRole);
+    //QDialogButtonBox *buttonbox = new QDialogButtonBox;
+    QPushButton *confirm = new QPushButton("暂存(Ctrl+S)");
+    QPushButton *revoke = new QPushButton("撤销暂存(Ctrl+Z)");
     connect(confirm, SIGNAL(clicked()), this, SLOT(confirmChange()));
     confirm->setShortcut(tr("Ctrl+S"));
     connect(revoke, SIGNAL(clicked()), this, SLOT(revokeChange()));
     revoke->setShortcut(tr("Ctrl+Z"));
-    //显示256色彩图
-    QRadioButton *radioButton16 = new QRadioButton("256色彩图");
-    connect(radioButton16, SIGNAL(clicked()), this, SLOT(showIndex8Image()));
-    QGridLayout *mainLayout = new QGridLayout;
 
     hideSpinBoxes();//隐藏各种输入框
 
 //设置布局
+    QGridLayout *mainLayout = new QGridLayout;
     mainLayout->addWidget(chartview, 0, 3, 3, 3);
     mainLayout->addWidget(GrayInfo, 1, 3, 1, 3);
     int no = 3;
 
     mainLayout->addWidget(getSeparator(), no, 3, 2, 3);
     mainLayout->addWidget(radioButton0, no, 3, 1, 1);
-    mainLayout->addWidget(radioButton16, no, 4, 1, 1);
-    mainLayout->addWidget(buttonbox, no++, 5, 1, 1);
+    mainLayout->addWidget(radioButton16, no++, 4, 1, 1);
+
 
     mainLayout->addWidget(radioButton4, no, 3, 1, 1);
     mainLayout->addWidget(radioButton5, no++, 4, 1, 1);
@@ -152,13 +163,25 @@ ImageProcesser::ImageProcesser():
     mainLayout->addWidget(radioButton10, no, 4, 1, 1);
     mainLayout->addWidget(radioButton11, no++, 5, 1, 1);
 
+
     mainLayout->addWidget(radioButton12, no, 3, 1, 1);
     mainLayout->addWidget(radioButton13, no, 4, 1, 1);
     mainLayout->addWidget(radioButton14, no++, 5, 1, 1);
 
     mainLayout->addWidget(radioButton15, no++, 3, 1, 1);
+    mainLayout->addWidget(getSeparator(), no, 3, 3, 3);
     mainLayout->addWidget(confrimEdit, no++, 3, 1, 1);
     mainLayout->addWidget(templateEdit, no-2, 4, 2, 2);
+
+    mainLayout->addWidget(radioButton17, no, 3, 1, 1);
+    mainLayout->addWidget(radioButton18, no, 4, 1, 1);
+    mainLayout->addWidget(radioButton19, no++, 5, 1, 1);
+
+    mainLayout->addWidget(getSeparator(), no, 3, 2, 3);
+    mainLayout->addWidget(radioButton20, no++, 3, 1, 1);
+
+    mainLayout->addWidget(confirm, no, 3, 1, 1);
+    mainLayout->addWidget(revoke, no++, 5, 1, 1);
 
     mainLayout->addWidget(scrollArea, 0, 0, no, 3);
 

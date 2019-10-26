@@ -32,7 +32,8 @@ SOURCES += \
     pointOperation.cpp \
     geometricOperation.cpp \
     menuActions.cpp \
-    enhancement.cpp
+    enhancement.cpp \
+    segmentation.cpp
 
 HEADERS += \
         imageprocesser.h

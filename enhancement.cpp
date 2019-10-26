@@ -115,7 +115,7 @@ void ImageProcesser::RobertsSharpen(){
             int Gy = grayimage.pixelIndex(i-1, j)-grayimage.pixelIndex(i, j-1);
             double sum = sqrt(Gx*Gx + Gy*Gy);
 
-            int index = (int)(sum+0.5);
+            int index = (int)(sum+0.5) + grayimage.pixelIndex(i, j);
             if(index<0) index = 0;
             if(index>255) index = 255;
             tmp.setPixel(i ,j, index);
@@ -149,7 +149,7 @@ void ImageProcesser::SobelSharpen(){
             }
             double sum = sqrt(Gx*Gx + Gy*Gy);
 
-            int index = (int)(sum+0.5);
+            int index = (int)(sum+0.5) + grayimage.pixelIndex(i, j);
             if(index<0) index = 0;
             if(index>255) index = 255;
             tmp.setPixel(i ,j, index);
@@ -180,6 +180,7 @@ void ImageProcesser::LaplacianSharpen(){
                     sum += grayimage.pixelIndex(I, J) * wights[I-(i-1)][J-(j-1)] ;
                 }
             }
+            sum += grayimage.pixelIndex(i, j);
             if(sum<0) sum = 0;
             if(sum>255) sum = 255;
             tmp.setPixel(i ,j, sum);
