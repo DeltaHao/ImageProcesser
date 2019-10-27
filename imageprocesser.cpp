@@ -109,6 +109,10 @@ ImageProcesser::ImageProcesser():
     QRadioButton *radioButton20 = new QRadioButton("霍夫变换");
     connect(radioButton20, SIGNAL(clicked()), this, SLOT(HoughTransform()));
 
+    //原图
+    QRadioButton *radioButton21 = new QRadioButton("原图");
+    connect(radioButton21, SIGNAL(clicked()), this, SLOT(showOriginal()));
+
     //暂存、撤销
     //QDialogButtonBox *buttonbox = new QDialogButtonBox;
     QPushButton *confirm = new QPushButton("暂存(Ctrl+S)");
@@ -127,8 +131,9 @@ ImageProcesser::ImageProcesser():
     int no = 3;
 
     mainLayout->addWidget(getSeparator(), no, 3, 2, 3);
-    mainLayout->addWidget(radioButton0, no, 3, 1, 1);
-    mainLayout->addWidget(radioButton16, no++, 4, 1, 1);
+    mainLayout->addWidget(radioButton21, no, 3, 1, 1);
+    mainLayout->addWidget(radioButton16, no, 4, 1, 1);
+    mainLayout->addWidget(radioButton0, no++, 5, 1, 1);
 
 
     mainLayout->addWidget(radioButton4, no, 3, 1, 1);
@@ -215,7 +220,7 @@ void ImageProcesser::createMenuActions(){
     exitAct->setShortcut(tr("Ctrl+Q"));
 
 //菜单栏-处理
-    QMenu *processMenu = menuBar()->addMenu(tr("&处理"));
+    QMenu *processMenu = menuBar()->addMenu(tr("&位平面"));
     //显示原图
     changeToGrayAct = processMenu->addAction(tr("&原图"), this, &ImageProcesser::showOriginal);
     changeToGrayAct->setEnabled(false);
@@ -259,39 +264,4 @@ QLabel *ImageProcesser::getSeparator()
     label->setFrameStyle(QFrame::HLine | QFrame::Raised);
     return label;
 }
-//隐藏其它输入框
-void ImageProcesser::hideSpinBoxes(){
-    spinbox1->setVisible(false);
-    spinbox2_1->setVisible(false);
-    spinbox2_2->setVisible(false);
-    spinbox3_1->setVisible(false);
-    spinbox3_2->setVisible(false);
-    spinbox6_1->setVisible(false);
-    spinbox6_2->setVisible(false);
-    spinbox7->setVisible(false);
-    spinbox8_1->setVisible(false);
-    spinbox8_2->setVisible(false);
-    templateEdit->setEnabled(false);
-    confrimEdit->setEnabled(false);
-}
-//更新画面
-void ImageProcesser::showImage(QImage img){
-    showingImage = img;
-    imageLabel->setPixmap(QPixmap::fromImage(img));
-    imageLabel->adjustSize();//imageLabel的大小可调整
 
-    showHistogram(img);//显示直方图
-}
-
-void ImageProcesser::confirmChange(){
-    if(showingImage.format() == QImage::Format_Indexed8)
-        grayimage = showingImage;
-    spinbox7->setValue(0);
-    statusBar()->showMessage(" 已暂存中间结果");
-}
-void ImageProcesser::revokeChange(){
-    grayimage = tempImage;
-    spinbox7->setValue(0);
-    showGrayImage();
-    statusBar()->showMessage("");
-}

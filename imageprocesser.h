@@ -19,12 +19,16 @@ public:
     ImageProcesser();//构造函数
 
 private slots://槽函数
+//内联函数
+    void showOriginal();//显示原图
+    void showGrayImage();//显示灰度图
+    void showImage(QImage);//更新画面
+    void hideSpinBoxes();//隐藏所有调节框
+    void confirmChange();//确认改变
+    void revokeChange();//撤销改变
 //---menuActions.cpp---
     void open();//打开图片
     void saveAs();//另存为    
-    void showOriginal();//显示原图
-    void confirmChange();//确认改变
-    void revokeChange();//撤销改变
     //将8位灰度图像转换为8幅位平面二值图
     void changeToBitplane1();
     void changeToBitplane2();
@@ -40,7 +44,6 @@ private slots://槽函数
     void about1();//显示“关于作者”信息
     void about2();//显示“关于软件”信息
 //---pointOperation.cpp---
-    void showGrayImage();//显示灰度图原图
     void showIndex8Image();//显示256色彩图
     void showBalanceImage();//显示均衡处理后的图片
     void showNewBalanceImage();//显示优化均衡处理后的图片
@@ -78,9 +81,7 @@ private slots://槽函数
 private://私有函数
 //---imageprocesser.cpp---
     void createMenuActions();//生成菜单栏
-    void showImage(QImage);//更新画面
-    void hideSpinBoxes();//隐藏所有调节框
-    QLabel *getSeparator();
+    QLabel *getSeparator();//生成分割线
 //---menuAction.cpp---
     bool loadFile(const QString &);
     bool saveFile(const QString &filename);
@@ -142,3 +143,53 @@ private://私有函数
 };
 
 #endif // IMAGEPROCESSER_H
+//显示灰度图
+inline void ImageProcesser::showGrayImage(){
+    hideSpinBoxes();
+    showImage(grayimage);
+}
+//显示原图
+inline void ImageProcesser::showOriginal(){
+    hideSpinBoxes();
+
+    showingImage = image;
+    imageLabel->setPixmap(QPixmap::fromImage(showingImage));//显示原图
+    imageLabel->adjustSize();
+
+    showHistogram(grayimage);
+}
+//隐藏其它输入框
+inline void ImageProcesser::hideSpinBoxes(){
+    spinbox1->setVisible(false);
+    spinbox2_1->setVisible(false);
+    spinbox2_2->setVisible(false);
+    spinbox3_1->setVisible(false);
+    spinbox3_2->setVisible(false);
+    spinbox6_1->setVisible(false);
+    spinbox6_2->setVisible(false);
+    spinbox7->setVisible(false);
+    spinbox8_1->setVisible(false);
+    spinbox8_2->setVisible(false);
+    templateEdit->setEnabled(false);
+    confrimEdit->setEnabled(false);
+}
+//更新画面
+inline void ImageProcesser::showImage(QImage img){
+    showingImage = img;
+    imageLabel->setPixmap(QPixmap::fromImage(img));
+    imageLabel->adjustSize();//imageLabel的大小可调整
+    showHistogram(img);//显示直方图
+}
+
+inline void ImageProcesser::confirmChange(){
+    if(showingImage.format() == QImage::Format_Indexed8)
+        grayimage = showingImage;
+    spinbox7->setValue(0);
+    statusBar()->showMessage(" 已暂存中间结果");
+}
+inline void ImageProcesser::revokeChange(){
+    grayimage = tempImage;
+    spinbox7->setValue(0);
+    showGrayImage();
+    statusBar()->showMessage("");
+}

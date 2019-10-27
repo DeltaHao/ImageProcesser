@@ -4,15 +4,49 @@
 
 #define PI 3.1415926
 
-//显示灰度图原图
-void ImageProcesser::showGrayImage(){
-    hideSpinBoxes();
-    showImage(grayimage);
+//显示256色彩图
+struct pixelFrenquency{
+    int pixel;
+    int frenquency=0;
+};
+inline bool cmp(pixelFrenquency a, pixelFrenquency b){
+    return a.frenquency > b.frenquency;
 }
-
 void ImageProcesser::showIndex8Image(){
     hideSpinBoxes();
 
+    int w = image.width();
+    int h = image.height();
+    //统计真彩图中各种颜色的出现次数
+    pixelFrenquency pf[4096];
+    for(int i=0; i<4096; i++){
+        pf[i].pixel = i;
+    }
+    for(int i=0; i<w ;i++){
+        for(int j=0; j<h; j++){
+            QRgb pixel=image.pixel(i,j);
+            int r=qRed(pixel)>>4;
+            int g=qGreen(pixel)>>4;
+            int b=qBlue(pixel)>>4;//只取高四位
+            ++pf[r*16*16 + g*16 + b].frenquency;
+        }
+    }
+    std::sort(pf, pf+4096, cmp);//排序
+
+    QImage tmp(w, h, QImage::Format_Indexed8);
+    //设置灰度表
+    QVector<QRgb> colorTable;
+    for(int i=0;i<256;i++){
+        int pixel = pf[i].pixel;
+        int b = pixel % 16;
+        int g = pixel/16 % 16;
+        int r = pixel/16/16 % 16;
+        colorTable.push_back(qRgb(r<<4,g<<4,b<<4));
+    }
+    tmp.setColorTable(colorTable);
+
+    tmp = image.convertToFormat(QImage::Format_Indexed8, colorTable, Qt::AutoColor);
+    showImage(tmp);
 }
 
 //显示均衡处理后的图片

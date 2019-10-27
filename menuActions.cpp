@@ -138,16 +138,7 @@ void ImageProcesser::saveAs()
 }
 
 //------处理栏--------------------------------------
-//显示原图
-void ImageProcesser::showOriginal(){
-    hideSpinBoxes();
 
-    showingImage = image;
-    imageLabel->setPixmap(QPixmap::fromImage(showingImage));//显示原图
-    imageLabel->adjustSize();
-
-    showHistogram(grayimage);
-}
 //显示位平面图
 void ImageProcesser::changeToBitplane1(){
     int index = 0;
