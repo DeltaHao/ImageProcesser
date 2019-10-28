@@ -1,7 +1,7 @@
 /*图像分割*/
 
 #include"imageprocesser.h"
-
+//边缘检测
 void ImageProcesser::SobelEdge(){
     hideSpinBoxes();
 
@@ -37,7 +37,6 @@ void ImageProcesser::SobelEdge(){
     showImage(tmp);
 
 }
-
 void ImageProcesser::PrewittEdge(){
     hideSpinBoxes();
 
@@ -72,7 +71,6 @@ void ImageProcesser::PrewittEdge(){
     }
     showImage(tmp);
 }
-
 void ImageProcesser::LaplacianEdge(){
     hideSpinBoxes();
 
@@ -103,6 +101,11 @@ void ImageProcesser::LaplacianEdge(){
     showImage(tmp);
 }
 
+//霍夫变换检测直线
 void ImageProcesser::HoughTransform(){
+    // https://blog.csdn.net/yuyuntan/article/details/80141392
+    // 看不懂
+    // 不会做
+    // 累了
     hideSpinBoxes();
 }

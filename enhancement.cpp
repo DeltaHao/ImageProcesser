@@ -193,7 +193,7 @@ void ImageProcesser::LaplacianSharpen(){
 void ImageProcesser::showTemplateEdit(){
     templateEdit->setEnabled(true);
     confrimEdit->setEnabled(true);
-    templateEdit->setPlaceholderText("请在这里输入模板：\n元素之间由空格隔开，换行时按回车\n(注意：不对合法性进行检查，请务必输入有效值)");
+    templateEdit->setPlaceholderText("请在这里输入模板：\n元素之间由逗号(英文)隔开，换行时按回车\n(注意：不对合法性进行检查，请务必输入有效值)");
 }
 void ImageProcesser::toConvolution(){
     //取得templateEdit中的文本
@@ -206,7 +206,7 @@ void ImageProcesser::toConvolution(){
     int template_w=0, template_h=0;
     //QMessageBox::information(this, QGuiApplication::applicationDisplayName(), strStream);
     while(!strStream[k].isNull()){//遍历字符串
-        if(strStream[k] == ' '){
+        if(strStream[k] == ','){
             templates[i][j++] = tmpstr.toInt();
             tmpstr.clear();
             if(template_h < j) template_h = j;//更新模板的高度
@@ -216,6 +216,9 @@ void ImageProcesser::toConvolution(){
             j=0;
             tmpstr.clear();
             if(template_w < i) template_w = i;//更新模板的宽度
+        }
+        else if(strStream[k] == ' '){
+            //忽略空格
         }
         else{
             tmpstr+=strStream[k];

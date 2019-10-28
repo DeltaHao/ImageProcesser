@@ -175,6 +175,10 @@ inline void ImageProcesser::hideSpinBoxes(){
 }
 //更新画面
 inline void ImageProcesser::showImage(QImage img){
+    scaleFactor = 1.0;
+    zoomInAct->setEnabled(scaleFactor < 5.0);
+    zoomOutAct->setEnabled(scaleFactor > 0.2);
+
     showingImage = img;
     imageLabel->setPixmap(QPixmap::fromImage(img));
     imageLabel->adjustSize();//imageLabel的大小可调整
