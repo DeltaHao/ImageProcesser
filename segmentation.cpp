@@ -107,5 +107,7 @@ void ImageProcesser::HoughTransform(){
     // 看不懂
     // 不会做
     // 累了
+
     hideSpinBoxes();
 }
+

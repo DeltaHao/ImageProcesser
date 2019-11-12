@@ -117,7 +117,7 @@ void ImageProcesser::showNewBalanceImage(){
 
     double P[256]{0};
     //均衡化f1
-    for(int i=0; i<grayInfo[0]; i++){
+    for(int i=0; i<=int(grayInfo[0]); i++){
         if(!i)
             P[i] = double(grays[i]) / f1count;
         else{
@@ -139,7 +139,7 @@ void ImageProcesser::showNewBalanceImage(){
             if(grayimage.pixelIndex(i, j) > int(grayInfo[0]))
                 newPix = grayimage.pixelIndex(i, j) * P[grayimage.pixelIndex(i, j)] + int(grayInfo[0])*P[int(grayInfo[0])];
             else
-            newPix = grayimage.pixelIndex(i, j) * P[grayimage.pixelIndex(i, j)];
+                newPix = grayimage.pixelIndex(i, j) * P[grayimage.pixelIndex(i, j)];
             if(newPix > 255) newPix = 255;
             tmp.setPixel(i, j, newPix);
         }

@@ -114,7 +114,6 @@ ImageProcesser::ImageProcesser():
     connect(radioButton21, SIGNAL(clicked()), this, SLOT(showOriginal()));
 
     //暂存、撤销
-    //QDialogButtonBox *buttonbox = new QDialogButtonBox;
     QPushButton *confirm = new QPushButton("暂存(Ctrl+S)");
     QPushButton *revoke = new QPushButton("撤销暂存(Ctrl+Z)");
     connect(confirm, SIGNAL(clicked()), this, SLOT(confirmChange()));
@@ -138,6 +137,8 @@ ImageProcesser::ImageProcesser():
 
     mainLayout->addWidget(radioButton4, no, 3, 1, 1);
     mainLayout->addWidget(radioButton5, no++, 4, 1, 1);
+
+
 
     mainLayout->addWidget(radioButton1, no, 3, 1, 1);
     mainLayout->addWidget(spinbox1, no++, 5, 1, 1);
@@ -174,7 +175,7 @@ ImageProcesser::ImageProcesser():
     mainLayout->addWidget(radioButton14, no++, 5, 1, 1);
 
     mainLayout->addWidget(radioButton15, no++, 3, 1, 1);
-    mainLayout->addWidget(getSeparator(), no, 3, 3, 3);
+    //mainLayout->addWidget(getSeparator(), no, 3, 3, 3);
     mainLayout->addWidget(confrimEdit, no++, 3, 1, 1);
     mainLayout->addWidget(templateEdit, no-2, 4, 2, 2);
 
